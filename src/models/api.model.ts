@@ -13,6 +13,12 @@ export interface JikanResponse<T> {
   };
 }
 
+// Definimos la forma que tendrán las promesas de los services
+export interface UseApiCall<T> {
+  call: Promise<T>;
+  controller: AbortController;
+}
+
 // Definimos la forma bonita que tendrán nuestros errores
 export interface ApiError {
   message: string;
