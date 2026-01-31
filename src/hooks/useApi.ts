@@ -1,21 +1,16 @@
 // useApi.ts
 import { useCallback, useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { type UseApiCall, type ApiError } from "@/models";
+import {
+  type UseApiCall,
+  type UseApiResult,
+  type Data,
+  type CustomError,
+} from "@/models";
 
 interface UseApiOptions<P> {
   autoFetch?: boolean;
   param: P;
-}
-
-type Data<T> = T | null;
-type CustomError = ApiError | null;
-
-interface UseApiResult<T, P> {
-  data: Data<T>;
-  error: CustomError;
-  loading: boolean;
-  fetch: (param: P) => void;
 }
 
 export const useApi = <T, P>(

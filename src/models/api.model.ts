@@ -15,8 +15,18 @@ export interface JikanResponse<T> {
 
 // Definimos la forma que tendrán las promesas de los services
 export interface UseApiCall<T> {
-  call: Promise<T>;
+  call: Promise<JikanResponse<T>>;
   controller: AbortController;
+}
+
+export type Data<T> = JikanResponse<T> | null;
+export type CustomError = ApiError | null;
+
+export interface UseApiResult<T, P> {
+  data: Data<T>;
+  error: CustomError;
+  loading: boolean;
+  fetch: (param: P) => void;
 }
 
 // Definimos la forma bonita que tendrán nuestros errores
