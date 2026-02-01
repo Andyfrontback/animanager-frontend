@@ -1,5 +1,6 @@
 //anime.model.ts
 export interface Anime {
+  mal_id: number;
   images: {
     jpg: {
       image_url: string;
@@ -16,7 +17,7 @@ export interface Anime {
   title_english: string;
   score: number;
   type: string;
-  airing: boolean;  
+  airing: boolean;
   aired: {
     prop: {
       from: {

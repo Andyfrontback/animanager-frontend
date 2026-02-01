@@ -15,7 +15,10 @@ export const TopCurrentAnimes = (props: getTopCurrentAnimesInput) => {
   return (
     <section className="flex flex-col justify-center items-center gap-8">
       <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-        {data && data.data?.map((anime) => <AnimeCard anime={anime} />)}
+        {data &&
+          data.data?.map((anime) => (
+            <AnimeCard key={anime.mal_id} anime={anime} />
+          ))}
       </div>
 
       <Button size="lg" onClick={() => fetch(paginateOptions)}>

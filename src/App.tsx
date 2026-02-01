@@ -9,6 +9,9 @@ function App() {
         page={1}
         limit={12}
       ></TopCurrentAnimes>
+      {/* <ErrorBoundary>
+        <AnimeList />
+      </ErrorBoundary> */}
     </>
   );
 }
