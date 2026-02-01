@@ -1,18 +1,15 @@
-import "./App.css";
-import { TopCurrentAnimes } from "./features/anime/components/TopCurrentAnimes";
+import AppRouter from "./AppRouter";
+import { ThemeProvider } from "./components/ui/theme-provider";
+import ErrorBoundary from "./ErrorBoundary";
 
 function App() {
+  /* Aquí orquestamos llamados a providers de contextos globales definidos por nosotros */
   return (
-    <>
-      <TopCurrentAnimes
-        start_date="2026-01-01"
-        page={1}
-        limit={12}
-      ></TopCurrentAnimes>
-      {/* <ErrorBoundary>
-        <AnimeList />
-      </ErrorBoundary> */}
-    </>
+    <ErrorBoundary>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <AppRouter />
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

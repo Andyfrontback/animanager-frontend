@@ -7,19 +7,22 @@ import { useApi } from "@/hooks";
 import { searchAnimesService } from "../services/anime.service";
 
 export const AnimeList = () => {
+  // 1. Obtenemos la data de la query Url
   const [searchParams] = useSearchParams();
 
+  // 2. Limpiamos la data
   const queryParams = useMemo(() => {
     const newSearchParams = Object.fromEntries(searchParams);
     return queryParamsSchema.parse(newSearchParams);
   }, [searchParams]);
 
+  // 3. Llamamos a nuestra implementación manual de Tanstack Query
   const { data, error, loading, fetch } = useApi(searchAnimesService, {
     autoFetch: true,
     param: queryParams,
   });
 
-  // 2. Renderizamos los distintos estados
+  // 4. Renderizamos los distintos estados
   if (error) return <p>{error.message}</p>;
 
   if (loading) return <p>Cargando...</p>;
