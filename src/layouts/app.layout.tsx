@@ -7,8 +7,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { ModeToggle } from "@/components/ui/mode-toggle";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { Outlet } from "react-router";
 
 export default function Layout() {
@@ -16,7 +19,7 @@ export default function Layout() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="bg-background/80 sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b px-4 z-40 backdrop-blur-sm justify-between">
+        <header className="bg-background/80 sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b px-4 z-40 backdrop-blur-sm justify-between rounded-t-lg">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="-ml-1" />
             <Breadcrumb>
@@ -33,7 +36,7 @@ export default function Layout() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <ModeToggle />
+          {/* Poner acá la cosa para sacar a los favoritos */}
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Outlet />
