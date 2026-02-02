@@ -32,27 +32,10 @@ export const AnimeCard = ({ anime }: AnimeProps) => {
   const isAiring = anime.airing;
 
   return (
-    <Card className="group relative overflow-hidden border-none shadow-sm hover:shadow-lg transition-all duration-300 flex flex-row md:flex-col h-32 md:h-full bg-card/50 hover:bg-card w-full md:max-w-60 rounded-xl ring-1 ring-border/50 py-0 px-0 gap-0 md:gap-4">
-      {/* --- SECCIÓN IMAGEN --- */}
-      {/* Móvil: Ancho fijo (w-24). Desktop: Alto fijo y ancho completo */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={toggleWatched}
-        className={cn(
-          "md:hidden h-full rounded-l-xl rounded-r-none top-1 right-1 z-20 w-7 md:h-8 md:w-8 transition-all duration-300 shadow-sm backdrop-blur-md",
-          !isWatched
-            ? "bg-black/40 text-white/80 hover:bg-black/60 hover:text-white"
-            : "bg-emerald-500 text-white hover:bg-emerald-600",
-        )}
-      >
-        {isWatched ? (
-          <ScanEye className="h-3 w-3 md:h-4 md:w-4" />
-        ) : (
-          <Eye className="h-3 w-3 md:h-4 md:w-4" />
-        )}
-      </Button>
-      <div className="relative h-full w-24 min-w-24 md:w-full md:min-w-0 md:h-64 overflow-hidden shrink-0">
+    <Card className="group relative overflow-hidden border-none shadow-sm hover:shadow-lg transition-all duration-300 flex flex-row md:flex-col h-32 md:h-full bg-card/50 hover:bg-card w-full md:max-w-60 rounded-xl ring-1 ring-border/50 p-0 gap-0 md:gap-2">
+      {/* SECCIÓN IMAGEN + BOTONES */}
+      {/* Usamos relative aquí para que los botones absolute se posicionen respecto a este bloque */}
+      <div className="relative h-full w-24 min-w-24 md:w-full md:min-w-0 md:h-64 shrink-0 overflow-hidden">
         <img
           src={anime.images.webp.large_image_url}
           alt={`Póster de ${anime.title}`}
@@ -60,8 +43,30 @@ export const AnimeCard = ({ anime }: AnimeProps) => {
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
-        {/* Overlay solo visible en Desktop para no tapar la imagen pequeña en móvil */}
+        {/* Overlay Gradiente (Corregido a bg-gradient) */}
         <div className="hidden md:block absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleWatched}
+          className={cn(
+            "absolute z-20 transition-all duration-300 shadow-sm backdrop-blur-md",
+            // Estilos Mobile (Mediano, esquina inferior izquierda sobre la foto)
+            "left-0 bottom-0 h-10 w-10 rounded-tr-xl rounded-bl-none rounded-tl-none rounded-br-none md:rounded-full",
+            // Estilos Desktop (Posición original)
+            "md:left-auto md:bottom-auto md:top-1 md:right-1",
+            !isWatched
+              ? "bg-black/60 text-white/90 hover:bg-black/80 hover:text-white"
+              : "bg-emerald-500 text-white hover:bg-emerald-600",
+          )}
+        >
+          {isWatched ? (
+            <ScanEye className="h-4 w-4" />
+          ) : (
+            <Eye className="h-4 w-4" />
+          )}
+        </Button>
 
         {/* --- ACCIONES (Flotantes) --- */}
         {/* En móvil las ocultamos de la imagen y las pasamos al contenido */}
@@ -73,14 +78,14 @@ export const AnimeCard = ({ anime }: AnimeProps) => {
               <TooltipTrigger asChild>
                 <div
                   className={cn(
-                    "flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full backdrop-blur-md text-white shadow-sm cursor-help transition-colors",
+                    "flex items-center justify-center w-10 h-10 rounded-full backdrop-blur-md text-white shadow-sm cursor-help transition-colors",
                     isAiring ? "bg-blue-500/80" : "bg-amber-500/80",
                   )}
                 >
                   {isAiring ? (
-                    <AudioLines className="w-3 h-3 md:w-4 md:h-4" />
+                    <AudioLines className="w-4 h-4" />
                   ) : (
-                    <BookmarkCheck className="w-3 h-3 md:w-4 md:h-4" />
+                    <BookmarkCheck className="w-4 h-4" />
                   )}
                 </div>
               </TooltipTrigger>
@@ -90,34 +95,13 @@ export const AnimeCard = ({ anime }: AnimeProps) => {
             </Tooltip>
           </TooltipProvider>
         </div>
-
-        {/* Botón Toggle Visto (Posicionado absoluto en desktop) */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleWatched}
-          className={cn(
-            "absolute hidden md:inline-block top-1 right-1 z-20 h-7 w-7 md:h-8 md:w-8 rounded-full transition-all duration-300 shadow-sm backdrop-blur-md",
-            !isWatched
-              ? "bg-black/40 text-white/80 hover:bg-black/60 hover:text-white"
-              : "bg-emerald-500 text-white hover:bg-emerald-600",
-          )}
-        >
-          <div className="flex items-center justify-center">
-            {isWatched ? (
-              <ScanEye className="h-3 w-3 md:h-4 md:w-4" />
-            ) : (
-              <Eye className="h-3 w-3 md:h-4 md:w-4" />
-            )}
-          </div>
-        </Button>
       </div>
 
       {/* --- SECCIÓN CONTENIDO --- */}
       <CardContent className="p-3 flex flex-col justify-between flex-1 min-w-0">
         <div className="space-y-1">
           <h3
-            className="font-semibold text-sm md:text-base leading-tight line-clamp-2 md:line-clamp-2 group-hover:text-primary transition-colors"
+            className="font-semibold text-sm md:text-base leading-tight line-clamp-3 md:line-clamp-4 group-hover:text-primary transition-colors"
             title={anime.title}
           >
             {anime.title}
