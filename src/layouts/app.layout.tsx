@@ -10,6 +10,7 @@ import { BreadcrumbLayout } from "./components/BreadcrumbLayout";
 import { Button } from "@/components/ui/button";
 import { ScanEye } from "lucide-react";
 import { AnimeWatched } from "@/features/anime/components/AnimeWatched";
+import { Toaster } from "sonner";
 
 export default function Layout() {
   return (
@@ -34,6 +35,7 @@ export default function Layout() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Outlet />
+          <Toaster />
         </div>
       </SidebarInset>
     </SidebarProvider>
