@@ -1,6 +1,5 @@
 import type { Anime } from "@/models";
-import { AudioLines, BookmarkCheck, Eye, ScanEye, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AudioLines, BookmarkCheck, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -10,31 +9,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import { useWatchedStore } from "@/stores";
+import { type ReactNode } from "react";
 
 interface AnimeProps {
   anime: Anime;
+  actionSlot: ReactNode;
 }
 
-export const AnimeCard = ({ anime }: AnimeProps) => {
-  const isWatched = useWatchedStore((state) =>
-    state.watchedList.some((a) => a.mal_id === anime.mal_id),
-  );
-
-  const toggleAnime = useWatchedStore((state) => state.toggleAnime);
-
-  const toggleWatched = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    toggleAnime(anime);
-
-    toast(!isWatched ? "Added to Watched" : "Removed from Watched", {
-      description: anime.title_english || anime.title,
-    });
-  };
-
+export const AnimeCard = ({ anime, actionSlot }: AnimeProps) => {
   const isAiring = anime.airing;
 
   return (
@@ -52,27 +34,7 @@ export const AnimeCard = ({ anime }: AnimeProps) => {
         {/* Overlay Gradiente (Corregido a bg-gradient) */}
         <div className="hidden md:block absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleWatched}
-          className={cn(
-            "absolute z-20 transition-all duration-300 shadow-sm backdrop-blur-md",
-            // Estilos Mobile (Mediano, esquina inferior izquierda sobre la foto)
-            "left-0 bottom-0 h-10 w-10 rounded-tr-xl rounded-bl-none rounded-tl-none rounded-br-none md:rounded-full",
-            // Estilos Desktop (Posición original)
-            "md:left-auto md:bottom-auto md:top-1 md:right-1",
-            !isWatched
-              ? "bg-black/60 text-white/90 hover:bg-black/80 hover:text-white"
-              : "bg-emerald-500 text-white hover:bg-emerald-600",
-          )}
-        >
-          {isWatched ? (
-            <ScanEye className="h-4 w-4" />
-          ) : (
-            <Eye className="h-4 w-4" />
-          )}
-        </Button>
+        {actionSlot}
 
         {/* --- ACCIONES (Flotantes) --- */}
         {/* En móvil las ocultamos de la imagen y las pasamos al contenido */}

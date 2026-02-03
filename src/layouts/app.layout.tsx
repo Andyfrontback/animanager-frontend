@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import {
   SidebarInset,
   SidebarProvider,
@@ -28,9 +28,7 @@ export default function Layout() {
                 <ScanEye size={16} data-icon="inline-start" /> Watched
               </Button>
             </SheetTrigger>
-            <SheetContent>
-              <AnimeWatched />
-            </SheetContent>
+            <AnimeWatched />
           </Sheet>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
