@@ -9,10 +9,11 @@ const searchAnimesService = ({
   limit,
   order_by,
   sort,
+  end_date,
 }: queryParamsInput): UseApiCall<Anime[]> => {
   const controller = loadController();
   const call = api.get<Anime[]>(
-    `/anime?order_by=${order_by}&sort=${sort}&start_date=${start_date}&page=${page}&limit=${limit}`,
+    `/anime?order_by=${order_by}&sort=${sort}&start_date=${start_date}&page=${page}&limit=${limit}${end_date ? `&end_date=${end_date}` : ""}`,
   );
 
   return {

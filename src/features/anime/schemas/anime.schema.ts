@@ -15,6 +15,10 @@ export const queryParamsSchema = z.object({
     .string()
     .regex(dateRegex, "Formato de fecha inválido (debe ser YYYY-MM-DD)")
     .default(`${year}-01-01`),
+  end_date: z
+    .string()
+    .regex(dateRegex, "Formato de fecha inválido (debe ser YYYY-MM-DD)")
+    .optional(),
 
   // 3. Enum para order_by
   order_by: z

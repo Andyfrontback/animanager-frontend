@@ -1,5 +1,4 @@
 import type { Anime } from "@/models";
-import { useState } from "react";
 import { AudioLines, BookmarkCheck, Eye, ScanEye, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,18 +11,25 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useWatchedStore } from "@/stores";
 
 interface AnimeProps {
   anime: Anime;
 }
 
 export const AnimeCard = ({ anime }: AnimeProps) => {
-  const [isWatched, setWatched] = useState<boolean>(false);
+  const isWatched = useWatchedStore((state) =>
+    state.watchedList.some((a) => a.mal_id === anime.mal_id),
+  );
+
+  const toggleAnime = useWatchedStore((state) => state.toggleAnime);
 
   const toggleWatched = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    setWatched((prev) => !prev);
+
+    toggleAnime(anime);
+
     toast(!isWatched ? "Added to Watched" : "Removed from Watched", {
       description: anime.title_english || anime.title,
     });
