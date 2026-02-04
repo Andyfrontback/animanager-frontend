@@ -6,13 +6,25 @@ import {
 } from "@/components/ui/sheet";
 import { useWatchedStore } from "@/stores";
 import { columns } from "./WatchedDataTable/columns";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/features/anime/components/WatchedDataTable/data-table";
 
 export const AnimeWatched = () => {
   const watchedList = useWatchedStore((state) => state.watchedList);
-  //const removeAnime = useWatchedListStore((state) => state.removeAnime);
   return (
-    <SheetContent className="min-w-full md:min-w-[75vw]">
+    <SheetContent
+      className="min-w-full md:min-w-[75vw]"
+      onPointerDownOutside={(event) => {
+        // Buscamos si el objetivo del click es parte del toaster de Sonner
+        const isToast =
+          event.target instanceof Element &&
+          event.target.closest("[data-sonner-toaster]");
+
+        // Si es un toast, prevenimos que el Sheet se cierre
+        if (isToast) {
+          event.preventDefault();
+        }
+      }}
+    >
       <SheetHeader>
         <SheetTitle>Watched Animes</SheetTitle>
         <SheetDescription>

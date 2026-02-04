@@ -15,6 +15,8 @@ import { Toaster } from "sonner";
 export default function Layout() {
   return (
     <SidebarProvider>
+      {/* Forzamos que el Toaster se superponga al sheet */}
+      <Toaster className="pointer-events-auto" />
       <AppSidebar />
       <SidebarInset>
         <header className="bg-background/80 sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b px-4 z-40 backdrop-blur-sm justify-between rounded-t-lg">
@@ -33,7 +35,6 @@ export default function Layout() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Outlet />
-          <Toaster />
         </div>
       </SidebarInset>
     </SidebarProvider>

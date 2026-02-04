@@ -8,6 +8,7 @@ interface WatchedState {
   addAnime: (anime: Anime) => void;
   removeAnime: (animeId: number) => void;
   toggleAnime: (anime: Anime) => void;
+  removeAnimes: (animes: Anime[]) => void;
 }
 
 export const useWatchedStore = create<WatchedState>()(
@@ -38,6 +39,13 @@ export const useWatchedStore = create<WatchedState>()(
           addAnime(anime);
         }
       },
+
+      removeAnimes: (animes: Anime[]) =>
+        set((state) => ({
+          watchedList: state.watchedList.filter(
+            (item) => !animes.some((a) => a.mal_id === item.mal_id),
+          ),
+        })),
     }),
     { name: "watched-storage" },
   ),
