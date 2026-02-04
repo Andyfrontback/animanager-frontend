@@ -7,6 +7,7 @@ import { useApi } from "@/hooks";
 import { searchAnimesService } from "../services/anime.service";
 import { ToggleWatchedButton } from "./ToggleWatchedButton";
 import { Eye, ScanEye } from "lucide-react";
+import { AnimesPagination } from "./AnimesPagination";
 
 export const AnimeList = () => {
   // 1. Obtenemos la data de la query Url
@@ -59,6 +60,13 @@ export const AnimeList = () => {
       <Button size="lg" onClick={() => fetch(queryParams)}>
         Cargar de nuevo
       </Button>
+
+      {data?.pagination && (
+        <AnimesPagination
+          current_page={data.pagination.current_page}
+          last_visible_page={data.pagination.last_visible_page}
+        />
+      )}
     </section>
   );
 };
