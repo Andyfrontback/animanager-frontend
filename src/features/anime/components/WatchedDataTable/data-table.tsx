@@ -178,7 +178,7 @@ export function DataTable<TData, TValue>({
                     )?.className;
 
                     return (
-                      <TableCell key={cell.id} className={metaStyle}>
+                      <TableCell key={cell.id} className={`h-19 ${metaStyle}`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
@@ -252,7 +252,7 @@ export function DataTable<TData, TValue>({
             className="gap-2"
           >
             <Trash2 size={16} />
-            Eliminar Selección
+            Delete Selection
           </Button>
         </div>
       )}

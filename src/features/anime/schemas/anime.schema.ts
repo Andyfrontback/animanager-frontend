@@ -1,32 +1,38 @@
 import { z } from "zod";
 
-// Helper para obtener el primer día del año actual (YYYY-01-01)
-const year = new Date().getFullYear();
-
-// Regex sencilla para formato YYYY-MM-DD
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-export const queryParamsSchema = z.object({
-  page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().default(12),
+export const searchPanelSchema = z
+  .object({
+    page: z.string().default("1"),
+    limit: z.string().default("12"),
 
-  // 2. Fechas con validación y transform
-  start_date: z
-    .string()
-    .regex(dateRegex, "Formato de fecha inválido (debe ser YYYY-MM-DD)")
-    .default(`${year}-01-01`),
-  end_date: z
-    .string()
-    .regex(dateRegex, "Formato de fecha inválido (debe ser YYYY-MM-DD)")
-    .optional(),
+    // Validamos formato, pero la lógica de fechas va al final
+    start_date: z.string().regex(dateRegex, "Use format YYYY-MM-DD").optional(),
 
-  // 3. Enum para order_by
-  order_by: z
-    .enum(["title", "score", "start_date", "end_date"])
-    .default("score"),
+    end_date: z
+      .string()
+      .regex(dateRegex, "Use format YYYY-MM-DD")
+      .optional()
+      .or(z.literal("")),
 
-  // 4. Enum para sort
-  sort: z.enum(["asc", "desc"]).default("desc"),
-});
+    order_by: z.enum(["title", "score", "start_date", "end_date"]).optional(),
+    sort: z.enum(["asc", "desc"]).optional(),
+    q: z.string().optional(),
+  })
+  // SuperRefine: Validación cruzada entre campos
+  .refine(
+    (data) => {
+      if (data.start_date && data.end_date) {
+        return new Date(data.end_date) >= new Date(data.start_date);
+      }
+      return true;
+    },
+    {
+      message: "End date cannot be before start date",
+      path: ["end_date"], // El error aparecerá en el campo end_date
+    },
+  );
 
-export type queryParamsInput = z.infer<typeof queryParamsSchema>;
+export type SearchPanelInput = z.infer<typeof searchPanelSchema>;
+export type SearchPanelSchema = typeof searchPanelSchema;

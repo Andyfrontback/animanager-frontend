@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { AnimeCard } from "./AnimeCard";
 import { useSearchParams } from "react-router";
 import { useMemo } from "react";
-import { queryParamsSchema } from "../schemas/anime.schema";
+import { searchPanelSchema } from "../schemas/anime.schema";
 import { useApi } from "@/hooks";
 import { searchAnimesService } from "../services/anime.service";
 import { ToggleWatchedButton } from "./ToggleWatchedButton";
@@ -16,7 +16,7 @@ export const AnimeList = () => {
   // 2. Limpiamos la data
   const queryParams = useMemo(() => {
     const newSearchParams = Object.fromEntries(searchParams);
-    return queryParamsSchema.parse(newSearchParams);
+    return searchPanelSchema.parse(newSearchParams);
   }, [searchParams]);
 
   // 3. Llamamos a nuestra implementación manual de Tanstack Query
