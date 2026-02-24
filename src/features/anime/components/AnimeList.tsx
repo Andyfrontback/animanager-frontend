@@ -1,13 +1,11 @@
-import { Button } from "@/components/ui/button";
 import { AnimeCard } from "./AnimeCard";
 import { useSearchParams } from "react-router";
 import { useMemo } from "react";
 import { searchPanelSchema } from "../schemas/anime.schema";
-import { useApi } from "@/hooks";
-import { searchAnimesService } from "../services/anime.service";
 import { ToggleWatchedButton } from "./ToggleWatchedButton";
 import { Eye, ScanEye } from "lucide-react";
 import { AnimesPagination } from "./AnimesPagination";
+import { useAnimeListSearchQuery } from "../hooks";
 
 export const AnimeList = () => {
   // 1. Obtenemos la data de la query Url
@@ -19,16 +17,14 @@ export const AnimeList = () => {
     return searchPanelSchema.parse(newSearchParams);
   }, [searchParams]);
 
-  // 3. Llamamos a nuestra implementación manual de Tanstack Query
-  const { data, error, loading, fetch } = useApi(searchAnimesService, {
-    autoFetch: true,
-    param: queryParams,
-  });
+  // 3. Usamos nuestro custom hook para esta query
+  const { isPending, isError, data, error } =
+    useAnimeListSearchQuery(queryParams);
 
   // 4. Renderizamos los distintos estados
-  if (error) return <p>{error.message}</p>;
+  if (isError) return <p>{error.message}</p>;
 
-  if (loading) return <p>Cargando...</p>;
+  if (isPending) return <p>Cargando...</p>;
 
   return (
     <section className="flex flex-col justify-center items-center gap-8">
@@ -56,10 +52,6 @@ export const AnimeList = () => {
             />
           ))}
       </div>
-
-      <Button size="lg" onClick={() => fetch(queryParams)}>
-        Cargar de nuevo
-      </Button>
 
       {data?.pagination && (
         <AnimesPagination
