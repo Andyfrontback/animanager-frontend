@@ -74,9 +74,8 @@ export function AnimeSearchPanel() {
             Refine your search to find the anime you are looking for
           </DialogDescription>
         </DialogHeader>
-
         <AnimeSearchForm>
-          <DialogClose>
+          <DialogClose asChild>
             <Button variant="outline">Close Panel</Button>
           </DialogClose>
         </AnimeSearchForm>

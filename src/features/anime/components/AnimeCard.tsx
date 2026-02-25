@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { type ReactNode } from "react";
+import { ImageWithSkeleton } from "@/components/ImageWithSkeleton";
 
 interface AnimeProps {
   anime: Anime;
@@ -20,15 +21,15 @@ export const AnimeCard = ({ anime, actionSlot }: AnimeProps) => {
   const isAiring = anime.airing;
 
   return (
-    <Card className="group relative overflow-hidden border-none shadow-sm hover:shadow-lg transition-all duration-300 flex flex-row md:flex-col h-32 md:h-full bg-card/50 hover:bg-card w-full md:max-w-60 rounded-xl ring-1 ring-border/50 p-0 gap-0 md:gap-2">
+    <Card className="group relative overflow-hidden border-none shadow-sm hover:shadow-lg transition-all duration-300 flex flex-row md:flex-col h-32 md:h-full bg-card/50 hover:bg-card max-w-xs md:max-w-60 rounded-xl ring-1 ring-border/50 p-0 gap-0 md:gap-2">
       {/* SECCIÓN IMAGEN + BOTONES */}
       {/* Usamos relative aquí para que los botones absolute se posicionen respecto a este bloque */}
       <div className="relative h-full w-24 min-w-24 md:w-full md:min-w-0 md:h-64 shrink-0 overflow-hidden">
-        <img
+        <ImageWithSkeleton
+          key={anime.images.webp.large_image_url}
           src={anime.images.webp.large_image_url}
           alt={`Póster de ${anime.title}`}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="transition-transform duration-500 group-hover:scale-105"
         />
 
         {/* Overlay Gradiente (Corregido a bg-gradient) */}

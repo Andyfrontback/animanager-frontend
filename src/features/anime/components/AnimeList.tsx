@@ -1,33 +1,81 @@
 import { AnimeCard } from "./AnimeCard";
 import { useSearchParams } from "react-router";
 import { useMemo } from "react";
-import { searchPanelSchema } from "../schemas/anime.schema";
+import {
+  searchPanelSchema,
+  type SearchPanelInput,
+} from "../schemas/anime.schema";
 import { ToggleWatchedButton } from "./ToggleWatchedButton";
 import { Eye, ScanEye } from "lucide-react";
 import { AnimesPagination } from "./AnimesPagination";
 import { useAnimeListSearchQuery } from "../hooks";
+import { cn } from "@/lib/utils";
+import { AnimeCardSkeleton } from "./AnimeCardSkeleton";
+import { AnimeListError } from "./AnimeListError";
+import { DEFAULT_VALUES } from "../types/animeComp.types";
 
 export const AnimeList = () => {
   // 1. Obtenemos la data de la query Url
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // 2. Limpiamos la data
-  const queryParams = useMemo(() => {
+  // 2. Parseamos los query params de forma segura
+  const parsedParams = useMemo(() => {
     const newSearchParams = Object.fromEntries(searchParams);
-    return searchPanelSchema.parse(newSearchParams);
+    return searchPanelSchema.safeParse(newSearchParams);
   }, [searchParams]);
 
-  // 3. Usamos nuestro custom hook para esta query
-  const { isPending, isError, data, error } =
-    useAnimeListSearchQuery(queryParams);
+  // 3. Protegemos el hook: Si la URL es inválida, le pasamos los defaults para que TanStack Query no intente hacer una petición con datos rotos.
+  const queryData = parsedParams.success ? parsedParams.data : DEFAULT_VALUES;
+
+  // 4. Ejecutamos nuestra query con el custom hook
+  const { isPending, isError, data, error, refetch, isFetching } =
+    useAnimeListSearchQuery(queryData as SearchPanelInput);
+
+  // 5. Interceptamos el error de Zod antes de renderizar la lista
+  if (!parsedParams.success) {
+    const zodErrorMsg =
+      parsedParams.error.issues[0].message ||
+      "Los filtros aplicados no son válidos.";
+
+    return (
+      <AnimeListError
+        errorMessage={`Invalid filters: ${zodErrorMsg} ${typeof zodErrorMsg}`}
+        resetErrorBoundary={() => setSearchParams(DEFAULT_VALUES)}
+        resetErrorButtonMessage="Reset Filters"
+      />
+    );
+  }
 
   // 4. Renderizamos los distintos estados
-  if (isError) return <p>{error.message}</p>;
+  if (isError) {
+    return (
+      <AnimeListError
+        errorMessage={error.message}
+        resetErrorBoundary={() => refetch()}
+      />
+    );
+  }
 
-  if (isPending) return <p>Cargando...</p>;
+  if (isPending) {
+    return (
+      <section className="flex flex-col justify-center items-center gap-8">
+        <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4 w-full">
+          {/* Renderizamos 12 skeletons (límite escogido de paginación) */}
+          {Array.from({ length: 12 }).map((_, index) => (
+            <AnimeCardSkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="flex flex-col justify-center items-center gap-8">
+    <section
+      className={cn(
+        "flex flex-col justify-center items-center gap-8",
+        isFetching ? "opacity-30" : "",
+      )}
+    >
       <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
         {data &&
           data.data?.map((anime) => (

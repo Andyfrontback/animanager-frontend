@@ -21,7 +21,7 @@ import {
 import {
   Field,
   FieldDescription,
-  FieldErrorComponent,
+  FieldError as FieldErrorComponent,
   FieldLabel,
 } from "@/components/ui/field";
 
