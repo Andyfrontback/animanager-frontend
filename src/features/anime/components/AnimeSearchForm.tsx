@@ -20,7 +20,7 @@ import { DatePickerForm } from "./SearchPanelForm/DatePickerForm";
 import { SelectForm } from "./SearchPanelForm/SelectForm";
 import { InputForm } from "./SearchPanelForm/InputForm";
 import { useSearchParams } from "react-router";
-import { useCallback, useMemo, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, type ReactNode } from "react";
 import { DEFAULT_VALUES } from "../types/animeComp.types";
 
 // Constantes fuera del componente para evitar recreación
@@ -61,13 +61,20 @@ export const AnimeSearchForm = ({ children }: AnimeSearchFormProps) => {
     control,
     formState: { errors },
     reset,
+    trigger,
   } = useForm<z.input<SearchPanelSchema>, unknown, z.output<SearchPanelSchema>>(
     {
       resolver: zodResolver(searchPanelSchema),
-      mode: "onBlur",
+      mode: "onChange",
       defaultValues: initialValues as SearchPanelInput,
     },
   );
+
+  // Forzamos la validación en el montaje
+  useEffect(() => {
+    // Al ejecutarse sin argumentos, evalúa todo el formulario
+    trigger();
+  }, [trigger]);
 
   // 2. ESTRATEGIA DE ACTUALIZACIÓN: Formulario -> URL
   const handleQueryParams = useCallback(

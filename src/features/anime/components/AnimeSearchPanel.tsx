@@ -67,7 +67,7 @@ export function AnimeSearchPanel() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{TriggerButton}</DialogTrigger>
-      <DialogContent className="md:max-w-lg">
+      <DialogContent className="md:max-w-lg lg:max-w-xl">
         <DialogHeader>
           <DialogTitle>Search Filters</DialogTitle>
           <DialogDescription>

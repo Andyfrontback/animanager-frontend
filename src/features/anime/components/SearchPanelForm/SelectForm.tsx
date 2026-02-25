@@ -17,12 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import {
-  Field,
-  FieldDescription,
-  FieldError as FieldErrorComponent,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { FieldErrorComponent } from "./FieldErrorComponent";
 
 export interface SelectOption {
   label: string;
@@ -68,6 +64,7 @@ export const SelectForm = <T extends FieldValues>({
           >
             <FieldLabel htmlFor={name} className="font-medium">
               {label} {required && <span className="text-red-500">*</span>}
+              <FieldErrorComponent error={error} fieldState={fieldState} />
             </FieldLabel>
 
             <div className="relative">
@@ -100,7 +97,6 @@ export const SelectForm = <T extends FieldValues>({
             </div>
 
             {description && <FieldDescription>{description}</FieldDescription>}
-            {currentError && <FieldErrorComponent errors={[currentError]} />}
           </Field>
         );
       }}

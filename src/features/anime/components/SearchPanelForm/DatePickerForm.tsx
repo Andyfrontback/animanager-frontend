@@ -18,12 +18,8 @@ import {
   type Path,
   type FieldError,
 } from "react-hook-form";
-import {
-  Field,
-  FieldDescription,
-  FieldError as FieldErrorComponent,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { FieldErrorComponent } from "./FieldErrorComponent";
 
 interface DatePickerFormProps<T extends FieldValues> {
   name: Path<T>;
@@ -66,6 +62,7 @@ export function DatePickerForm<T extends FieldValues>({
         >
           <FieldLabel htmlFor={name}>
             {label} {required && <span className="text-red-500">*</span>}
+            <FieldErrorComponent error={error} fieldState={fieldState} />
           </FieldLabel>
 
           <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -81,7 +78,7 @@ export function DatePickerForm<T extends FieldValues>({
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {field.value ? (
-                    format(new Date(field.value), "PPP")
+                    format(new Date(field.value).setUTCHours(5), "PPP")
                   ) : (
                     <span>{placeholder}</span>
                   )}
@@ -96,7 +93,7 @@ export function DatePickerForm<T extends FieldValues>({
                   className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer p-1 hover:bg-slate-400 rounded-full text-muted-foreground hover:text-foreground transition-colors z-10"
                   onClick={(e) => {
                     e.stopPropagation();
-                    field.onChange(null);
+                    field.onChange("");
                     if (onDateSelect) onDateSelect(undefined);
                   }}
                 >
@@ -105,7 +102,12 @@ export function DatePickerForm<T extends FieldValues>({
               )}
             </div>
 
-            <PopoverContent className="w-auto p-0" align="start">
+            <PopoverContent
+              className="w-auto p-3"
+              align="center"
+              side="top"
+              sideOffset={8}
+            >
               <Calendar
                 mode="single"
                 captionLayout="dropdown"
@@ -115,7 +117,7 @@ export function DatePickerForm<T extends FieldValues>({
                 onSelect={(date) => {
                   setIsOpen(false);
                   if (date) {
-                    field.onChange(date);
+                    field.onChange(formatDateForApi(date));
                     if (onDateSelect) onDateSelect(formatDateForApi(date));
                   }
                 }}
@@ -128,10 +130,6 @@ export function DatePickerForm<T extends FieldValues>({
           </Popover>
 
           {description && <FieldDescription>{description}</FieldDescription>}
-          {/* Prioridad: Error explícito pasado por props > Error interno del field */}
-          {(error || fieldState.error) && (
-            <FieldErrorComponent errors={[error || fieldState.error]} />
-          )}
         </Field>
       )}
     />

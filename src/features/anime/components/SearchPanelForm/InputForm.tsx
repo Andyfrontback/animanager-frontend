@@ -10,13 +10,9 @@ import {
 import { X, Search } from "lucide-react"; // Iconos para UX
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import {
-  Field,
-  FieldDescription,
-  FieldError as FieldErrorComponent,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import type { HTMLInputTypeAttribute } from "react";
+import { FieldErrorComponent } from "./FieldErrorComponent";
 
 interface InputFormProps<T extends FieldValues> {
   name: Path<T>;
@@ -55,6 +51,7 @@ export const InputForm = <T extends FieldValues>({
           <Field data-invalid={!!currentError} className="flex flex-col gap-2">
             <FieldLabel htmlFor={name} className="font-medium">
               {label} {required && <span className="text-red-500">*</span>}
+              <FieldErrorComponent error={error} fieldState={fieldState} />
             </FieldLabel>
 
             <div className="relative flex items-center">
@@ -104,7 +101,6 @@ export const InputForm = <T extends FieldValues>({
             </div>
 
             {description && <FieldDescription>{description}</FieldDescription>}
-            {currentError && <FieldErrorComponent errors={[currentError]} />}
           </Field>
         );
       }}
