@@ -73,6 +73,7 @@ export const SelectForm = <T extends FieldValues>({
                 value={field.value}
                 onValueChange={(value) => {
                   field.onChange(value);
+                  field.onBlur();
                   if (onValueSelect) onValueSelect(value);
                 }}
               >

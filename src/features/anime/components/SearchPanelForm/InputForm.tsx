@@ -55,7 +55,7 @@ export const InputForm = <T extends FieldValues>({
             </FieldLabel>
 
             <div className="relative flex items-center">
-              {/* Icono de Lupa (Opcional) */}
+              {/* Icono de Lupa */}
               {withSearchIcon && (
                 <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
               )}
@@ -72,6 +72,7 @@ export const InputForm = <T extends FieldValues>({
                 )}
                 // Importante: Sobreescribimos onBlur pero llamamos al original
                 onBlur={(e) => {
+                  field.onChange(e.target.value);
                   field.onBlur(); // Mantiene el estado 'touched' de RHF
                   if (onInputBlur) onInputBlur(e.target.value || undefined);
                 }}
@@ -91,7 +92,7 @@ export const InputForm = <T extends FieldValues>({
                   className="absolute right-3 p-1 rounded-full hover:bg-slate-100 text-muted-foreground hover:text-foreground transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
-                    field.onChange(""); // Limpia el input visualmente
+                    field.onChange("");
                     if (onInputBlur) onInputBlur(undefined); // Limpia la URL
                   }}
                 >

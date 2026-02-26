@@ -21,7 +21,7 @@ import { SelectForm } from "./SearchPanelForm/SelectForm";
 import { InputForm } from "./SearchPanelForm/InputForm";
 import { useSearchParams } from "react-router";
 import { useCallback, useEffect, useMemo, type ReactNode } from "react";
-import { DEFAULT_VALUES } from "../types/animeComp.types";
+import { DEFAULT_VALUES } from "../types/animeComp.types";                            
 
 // Constantes fuera del componente para evitar recreación
 const ORDER_OPTIONS = [
@@ -65,7 +65,7 @@ export const AnimeSearchForm = ({ children }: AnimeSearchFormProps) => {
   } = useForm<z.input<SearchPanelSchema>, unknown, z.output<SearchPanelSchema>>(
     {
       resolver: zodResolver(searchPanelSchema),
-      mode: "onChange",
+      mode: "onBlur",
       defaultValues: initialValues as SearchPanelInput,
     },
   );
@@ -120,7 +120,6 @@ export const AnimeSearchForm = ({ children }: AnimeSearchFormProps) => {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {" "}
         {/* space-y-4 da espaciado uniforme */}
         <form id="anime-search-form" onSubmit={(e) => e.preventDefault()}>
           <FieldGroup className="gap-4">
@@ -151,7 +150,7 @@ export const AnimeSearchForm = ({ children }: AnimeSearchFormProps) => {
                 control={control}
                 name="end_date"
                 label="End date"
-                error={errors.end_date} // Aquí se mostrará el error del .refine()
+                error={errors.end_date}
                 required={false}
                 placeholder="Optional"
                 onDateSelect={(date_str) =>
@@ -187,7 +186,6 @@ export const AnimeSearchForm = ({ children }: AnimeSearchFormProps) => {
 
       <CardFooter className="flex justify-between">
         {children}
-        {/* Botón Reset mejorado */}
         <Button
           type="button"
           variant="destructive"

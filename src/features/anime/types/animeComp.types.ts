@@ -8,4 +8,6 @@ export const DEFAULT_VALUES: Partial<SearchPanelInput> = {
   limit: "12",
   sort: "desc",
   order_by: "score",
+  end_date: "",
+  q: "",
 };

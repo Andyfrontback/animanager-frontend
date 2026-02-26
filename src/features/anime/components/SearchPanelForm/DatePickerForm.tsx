@@ -94,6 +94,7 @@ export function DatePickerForm<T extends FieldValues>({
                   onClick={(e) => {
                     e.stopPropagation();
                     field.onChange("");
+                    field.onBlur();
                     if (onDateSelect) onDateSelect(undefined);
                   }}
                 >
@@ -118,6 +119,7 @@ export function DatePickerForm<T extends FieldValues>({
                   setIsOpen(false);
                   if (date) {
                     field.onChange(formatDateForApi(date));
+                    field.onBlur();
                     if (onDateSelect) onDateSelect(formatDateForApi(date));
                   }
                 }}
