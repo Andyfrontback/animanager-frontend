@@ -1,6 +1,6 @@
 import { Hero } from "@/features/home/components/Hero";
 import { Button } from "@/components/ui/button";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 
 export const HomePage = () => {
   return (
@@ -19,11 +19,11 @@ export const HomePage = () => {
         <div className="flex flex-wrap gap-4 pt-4">
           <Button
             size="lg"
-            className="bg-primary hover:bg-primary-hover text-primary-foreground font-bold px-8 shadow-[0_0_20px_rgba(var(--primary),0.3)]"
+            className="bg-primary hover:bg-primary-hover text-primary-foreground font-bold px-8 shadow-primary/30"
           >
             Get Started
           </Button>
-          <NavLink to="/private/anime/list">
+          <Link to="/private/anime/list">
             <Button
               size="lg"
               variant="outline"
@@ -31,7 +31,7 @@ export const HomePage = () => {
             >
               Browse Anime
             </Button>
-          </NavLink>
+          </Link>
         </div>
       </Hero>
     </>

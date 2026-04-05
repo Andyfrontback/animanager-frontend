@@ -20,7 +20,7 @@ const AppRouter = () => {
           </Route>
 
           {/* Redirección inicial (En producción cambiar a public mientras poner la dir a testear en desarrollo)*/}
-          <Route path="/" element={<Navigate to="private/anime/list" />} />
+          <Route path="/" element={<Navigate to="public/home" />} />
         </Route>
       </RoutesWithNotFound>
     </BrowserRouter>
