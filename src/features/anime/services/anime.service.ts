@@ -1,6 +1,7 @@
 import { api } from "@/lib/axios";
 import type { Anime, JikanResponse } from "@/models";
 import type { SearchPanelInput } from "../schemas/anime.schema";
+import { clearRepeatedAnimes } from "@/utils/clearRepeatedAnimes.util";
 
 interface SearchAnimesServiceInput extends SearchPanelInput {
   signal: AbortSignal;
@@ -24,15 +25,7 @@ const searchAnimesService = async ({
   const animes = response.data;
 
   // Limpiamos los duplicados para que el cache de Tanstack Query funcione correctamente (La api pública lamentablemente arroja animes duplicados en ocasiones)
-  const seenIds = new Set<number>();
-
-  const uniqueAnimes = animes.filter((anime: Anime) => {
-    if (seenIds.has(anime.mal_id)) {
-      return false;
-    }
-    seenIds.add(anime.mal_id);
-    return true;
-  });
+  const uniqueAnimes = clearRepeatedAnimes(animes);
 
   return {
     ...response,
