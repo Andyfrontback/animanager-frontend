@@ -70,7 +70,7 @@ export const AnimeCard = ({ anime, actionSlot }: AnimeProps) => {
       <CardContent className="p-3 flex flex-col justify-between flex-1 min-w-0">
         <div className="space-y-1">
           <h3
-            className="font-semibold text-sm md:text-base leading-tight line-clamp-3 md:line-clamp-4 group-hover:text-primary transition-colors"
+            className="font-semibold text-sm md:text-base leading-tight line-clamp-3 md:line-clamp-4 transition-colors"
             title={anime.title}
           >
             {anime.title}

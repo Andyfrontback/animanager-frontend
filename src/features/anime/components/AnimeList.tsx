@@ -88,7 +88,8 @@ export const AnimeList = () => {
                     base: "absolute z-20 transition-all duration-300 shadow-sm backdrop-blur-md left-0 bottom-0 h-10 w-10 rounded-tr-xl rounded-bl-none rounded-tl-none rounded-br-none md:rounded-full md:left-auto md:bottom-auto md:top-1 md:right-1",
                     isNotWatched:
                       "bg-black/60 text-white/90 hover:bg-black/80 hover:text-white",
-                    isWatched: "bg-emerald-500 text-white hover:bg-emerald-600",
+                    isWatched:
+                      "bg-primary text-white hover:bg-primary-hover hover:text-gray-300",
                   }}
                   anime={anime}
                   children={{
