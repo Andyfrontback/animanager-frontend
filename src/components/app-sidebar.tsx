@@ -36,7 +36,7 @@ const data = {
         },
         {
           title: "Tierlist",
-          url: "#",
+          url: "/private/anime/tierlist",
         },
       ],
     },
@@ -61,7 +61,7 @@ const data = {
     },
     {
       name: "Dashboard",
-      url: "#",
+      url: "/private/dashboard",
       icon: PieChart,
     },
   ],

@@ -3,7 +3,8 @@ import { Hero } from "@/features/home/components/Hero";
 import { BentoGrid } from "@/features/home/components/BentoGrid";
 import { TiltCard } from "@/features/home/components/TiltCard";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router"; // O react-router-dom
+import { Link } from "react-router";
+
 import maomaoImg from "@/assets/imgs/Maomao.jpg";
 import rezeImg from "@/assets/imgs/reze.jpg";
 import kaguyaImg from "@/assets/imgs/kaguyaShinomiya.jpg";
@@ -13,6 +14,7 @@ import frierenImg from "@/assets/imgs/frieren.jpeg";
 export const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      {/* HERO SECTION */}
       <Hero>
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight">
           Track your <span className="text-primary italic">Anime</span> <br />
@@ -65,6 +67,7 @@ export const HomePage = () => {
             description="Visualize your hours watched, top genres and custom analytics."
             image={kohakuImg}
             layoutType="vertical"
+            cardHref="/private/dashboard"
           />
         </div>
 
@@ -75,6 +78,7 @@ export const HomePage = () => {
             description="Drag and drop your favorite anime to create the ultimate ranking."
             image={frierenImg}
             layoutType="vertical"
+            cardHref="/private/anime/tierlist"
           />
         </div>
 

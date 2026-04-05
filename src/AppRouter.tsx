@@ -4,10 +4,12 @@ import { PrivateGuard } from "@/guards";
 import { PrivateRouter } from "@/routes/PrivateRouter";
 import { PublicRouter } from "@/routes/PublicRouter";
 import RoutesWithNotFound from "@/routes/components/RoutesWithNotFound";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <RoutesWithNotFound>
         {/* Layout para toda la app */}
         <Route element={<Layout />}>
