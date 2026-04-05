@@ -6,11 +6,11 @@ import { Frame, Home, PieChart, SquareTerminal } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
+/* import { NavUser } from "@/components/nav-user"; */
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
+  /* SidebarFooter, */
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -92,9 +92,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
+      {/* Si esto escala bien toca hacerle un backend o llamar un BaaS dedicado
       <SidebarFooter>
         <NavUser user={data.user} />
-      </SidebarFooter>
+      </SidebarFooter> */}
     </Sidebar>
   );
 }

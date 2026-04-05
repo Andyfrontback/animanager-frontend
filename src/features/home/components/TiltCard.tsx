@@ -58,6 +58,12 @@ export const TiltCard = ({
       className={cn("relative w-full h-full perspective-[1000px]", className)}
     >
       <motion.div
+        // Sroll Animation
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        // Tilt Card Config
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={{
