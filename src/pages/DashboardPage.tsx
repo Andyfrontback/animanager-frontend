@@ -1,3 +1,5 @@
+import { ChartBarInteractive } from "@/features/dashboard/components/BarChartInteractive";
+
 export const DashboardPage = () => {
-  return <p>Dashboard Page</p>;
+  return <ChartBarInteractive />;
 };

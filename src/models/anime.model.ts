@@ -17,6 +17,7 @@ export interface Anime {
   title_english: string;
   score: number;
   type: string;
+  episodes: number | null; // Añadido para la lógica de duración
   airing: boolean;
   aired: {
     prop: {
@@ -25,4 +26,11 @@ export interface Anime {
       };
     };
   };
+  duration: string;
+  genres: {
+    name: string;
+  }[];
+  studios: {
+    name: string;
+  }[];
 }
