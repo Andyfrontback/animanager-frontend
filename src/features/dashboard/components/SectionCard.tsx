@@ -1,100 +1,92 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
-
-import { Badge } from "@/components/ui/badge";
+import { Clock, Star, Trophy, Clapperboard } from "lucide-react";
 import {
   Card,
-  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
-export function SectionCards() {
+interface AnimeStatsCardsProps {
+  totalMinutes: number;
+  topGenre: string;
+  avgScore: number;
+  favoriteStudio: string;
+}
+
+export function AnimeStatsCards({
+  totalMinutes,
+  topGenre,
+  avgScore,
+  favoriteStudio,
+}: AnimeStatsCardsProps) {
+  const totalHours = (totalMinutes / 60).toFixed(1);
+
   return (
-    <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
+    <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:shadow-xs lg:px-6 sm:grid-cols-2 xl:grid-cols-4">
+      {/* Total Hours */}
       <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Total Revenue</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $1,250.00
+        <CardHeader className="pb-2">
+          <CardDescription>Total Watch Time</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums">
+            {totalHours} hrs
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
-            </Badge>
-          </CardAction>
+          <div className="absolute top-4 right-4 text-muted-foreground">
+            <Clock className="size-5" />
+          </div>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Visitors for the last 6 months
-          </div>
+        <CardFooter className="text-sm text-muted-foreground pt-4 border-t mt-4">
+          Based on {totalMinutes} total minutes watched
         </CardFooter>
       </Card>
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>New Customers</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,234
+
+      {/* Top Genre (Highlighted) */}
+      <Card className="@container/card border-[oklch(0.6_0.25_280)]/50 bg-[oklch(0.6_0.25_280)]/5">
+        <CardHeader className="pb-2">
+          <CardDescription className="text-[oklch(0.6_0.25_280)] font-medium">
+            Top Genre
+          </CardDescription>
+          <CardTitle className="text-2xl font-semibold truncate text-[oklch(0.6_0.25_280)]">
+            {topGenre}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingDown />
-              -20%
-            </Badge>
-          </CardAction>
+          <div className="absolute top-4 right-4 text-[oklch(0.6_0.25_280)]">
+            <Star className="size-5 fill-[oklch(0.6_0.25_280)]/20" />
+          </div>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period <IconTrendingDown className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Acquisition needs attention
-          </div>
+        <CardFooter className="text-sm text-[oklch(0.6_0.25_280)]/80 pt-4 border-t border-[oklch(0.6_0.25_280)]/20 mt-4">
+          Your most watched genre
         </CardFooter>
       </Card>
+
+      {/* Average Score */}
       <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Active Accounts</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
+        <CardHeader className="pb-2">
+          <CardDescription>Average Score</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums">
+            {avgScore} / 10
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention <IconTrendingUp className="size-4" />
+          <div className="absolute top-4 right-4 text-muted-foreground">
+            <Trophy className="size-5" />
           </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
+        </CardHeader>
+        <CardFooter className="text-sm text-muted-foreground pt-4 border-t mt-4">
+          Average rating across all anime
         </CardFooter>
       </Card>
+
+      {/* Favorite Studio */}
       <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Growth Rate</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            4.5%
+        <CardHeader className="pb-2">
+          <CardDescription>Favorite Studio</CardDescription>
+          <CardTitle className="text-2xl font-semibold truncate">
+            {favoriteStudio}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +4.5%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase <IconTrendingUp className="size-4" />
+          <div className="absolute top-4 right-4 text-muted-foreground">
+            <Clapperboard className="size-5" />
           </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
+        </CardHeader>
+        <CardFooter className="text-sm text-muted-foreground pt-4 border-t mt-4">
+          Studio with the most titles watched
         </CardFooter>
       </Card>
     </div>

@@ -1,6 +1,8 @@
 // stats-adapters.ts, perdón por no respetar la arquitectura en cuanto a la estructura, pero la verdad es que no amerita hacer esa bobada por una implementación rápida
 import type { Anime } from "@/models/anime.model";
 import { type AnimeStats, calculateAnimeStats } from "./statsEngine.service";
+// Importamos el worker usando la convención de Vite (?worker)
+import StatsWorker from "./statsWorker.service?worker";
 
 // Puerto (Contrato)
 export interface IStatsCalculator {
@@ -21,9 +23,7 @@ export const workerStatsCalculator: IStatsCalculator = {
   calculate: (animeList: Anime[]): Promise<AnimeStats> => {
     return new Promise((resolve, reject) => {
       // Sintaxis nativa de Vite para instanciar el Worker
-      const worker = new Worker(new URL("./stats.worker.ts", import.meta.url), {
-        type: "module",
-      });
+      const worker = new StatsWorker();
 
       worker.onmessage = (
         event: MessageEvent<AnimeStats | { error: string }>,
