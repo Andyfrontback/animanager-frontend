@@ -8,8 +8,12 @@ import { AnimeStatsCards } from "@/features/dashboard/components/SectionCard";
 import { InteractiveStatsChart } from "@/features/dashboard/components/BarChartInteractive";
 import { useAnimeStats } from "@/features/dashboard/hooks/useAnimeStats.ts";
 
-// Importa el DataTable cuando lo hagamos
-// import { DataTable } from "@/components/data-table";
+// Importa el DataTable
+import { columns } from "@/features/anime/components/WatchedDataTable/columns";
+import { DataTable } from "@/features/anime/components/WatchedDataTable/data-table";
+
+// Importamos la store
+import { useWatchedStore } from "@/stores";
 
 // Helper para sacar el item más frecuente de un Record<string, number>
 const getTopItem = (frequencyMap: Record<string, number> = {}): string => {
@@ -32,6 +36,9 @@ export function DashboardPage() {
       );
     }
   }, []);
+
+  // recuperamos la store
+  const watchedList = useWatchedStore((state) => state.watchedList);
 
   // Orquestación de datos (Web Worker)
   const { stats, isLoading, error } = useAnimeStats("sync");
@@ -90,7 +97,11 @@ export function DashboardPage() {
 
           {/* Aquí irá el data table */}
           <section className="px-4 lg:px-6" aria-label="Tabla de animes vistos">
-            {/* <DataTable data={data} /> */}
+            <DataTable
+              columns={columns}
+              data={watchedList}
+              maxSheetSize={false}
+            />
           </section>
         </div>
       </div>

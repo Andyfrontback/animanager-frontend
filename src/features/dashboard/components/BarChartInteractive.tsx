@@ -78,9 +78,9 @@ export function InteractiveStatsChart({
               <span className="text-xs text-muted-foreground uppercase tracking-wider">
                 {view === "genres" ? "Genres" : "Studios"}
               </span>
-              <span className="text-lg leading-none font-bold sm:text-2xl capitalize">
+              {/* <span className="text-lg leading-none font-bold sm:text-2xl capitalize">
                 {activeView === view ? "Currently viewing" : "Switch view"}
-              </span>
+              </span> */}
             </button>
           ))}
         </div>

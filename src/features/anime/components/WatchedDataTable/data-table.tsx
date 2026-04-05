@@ -1,3 +1,4 @@
+// data-table.tsx
 "use client";
 
 import {
@@ -24,38 +25,80 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useWatchedStore } from "@/stores";
 import type { Anime } from "@/models";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  maxSheetSize: boolean;
 }
+
+// Lista de los IDs de las columnas dinámicas que definimos en columns.tsx
+const DYNAMIC_COLUMNS = [
+  "dynamic_score",
+  "dynamic_studio",
+  "dynamic_type",
+  "dynamic_year",
+];
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  maxSheetSize,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [pagination, setPagination] = useState({
-    pageIndex: 0, // Página inicial (0-indexed)
-    pageSize: 5, // Límite de filas por página
-  });
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
+
+  // Estado para las vistas mobile/tablet
+  const [activeMobileCol, setActiveMobileCol] = useState(DYNAMIC_COLUMNS[0]); // Por defecto Score
+  const [activeTabletCols, setActiveTabletCols] = useState([
+    DYNAMIC_COLUMNS[0],
+    DYNAMIC_COLUMNS[1],
+  ]); // Score y Studio
+
+  // Estado que le pasamos a TanStack
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const removeAnimes = useWatchedStore((state) => state.removeAnimes);
+
+  // --- Lógica Responsiva para Ocultar/Mostrar Columnas ---
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const newVisibility: VisibilityState = {};
+
+      if (width < 768) {
+        // MOBILE (< md): Ocultar todas las dinámicas excepto la seleccionada
+        DYNAMIC_COLUMNS.forEach((col) => {
+          newVisibility[col] = col === activeMobileCol;
+        });
+      } else if ((width >= 768 && width < 1024) || maxSheetSize) {
+        // TABLET (md a lg): Mostrar solo las 2 seleccionadas
+        DYNAMIC_COLUMNS.forEach((col) => {
+          newVisibility[col] = activeTabletCols.includes(col);
+        });
+      } else {
+        // DESKTOP (>= lg): Mostrar todas las dinámicas
+        DYNAMIC_COLUMNS.forEach((col) => {
+          newVisibility[col] = true;
+        });
+      }
+
+      setColumnVisibility(newVisibility);
+    };
+
+    handleResize(); // Ejecutar al montar
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [activeMobileCol, activeTabletCols, maxSheetSize]);
 
   const table = useReactTable({
     data,
@@ -66,7 +109,7 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange: setColumnVisibility, // Controlado por nuestro useEffect
     onRowSelectionChange: setRowSelection,
     onPaginationChange: setPagination,
     state: {
@@ -93,60 +136,67 @@ export function DataTable<TData, TValue>({
   return (
     <div className="flex flex-col gap-4">
       <div className="overflow-hidden rounded-md border py-0 px-4">
-        <div className="flex items-center py-4 gap-2">
+        {/* --- CABECERA DE HERRAMIENTAS --- */}
+        <div className="flex flex-col md:flex-row md:items-center py-4 gap-4">
           <Input
-            placeholder="Filter Original Title..."
+            placeholder="Filter title..."
             value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("title")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  const metaStyle = (
-                    column.columnDef.meta as unknown as {
-                      className: string;
-                    }
-                  )?.className;
 
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className={`capitalize ${metaStyle}`}
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id.replace("_", " ")}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Selector Mobile (1 Columna) */}
+          <div className="md:hidden w-full overflow-x-auto pb-1">
+            <Tabs
+              value={activeMobileCol}
+              onValueChange={setActiveMobileCol}
+              className="w-full"
+            >
+              <TabsList className="w-full justify-start">
+                <TabsTrigger value="dynamic_score">Score</TabsTrigger>
+                <TabsTrigger value="dynamic_studio">Studio</TabsTrigger>
+                <TabsTrigger value="dynamic_type">Type</TabsTrigger>
+                <TabsTrigger value="dynamic_year">Year</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
+          {/* Selector Tablet (2 Columnas - Interfaz simplificada con Tabs para elegir pares) */}
+          <div className="hidden md:flex lg:hidden ml-auto">
+            <Tabs
+              value={activeTabletCols.join(",")}
+              onValueChange={(val) => setActiveTabletCols(val.split(","))}
+            >
+              <TabsList>
+                <TabsTrigger
+                  value={`${DYNAMIC_COLUMNS[0]},${DYNAMIC_COLUMNS[1]}`}
+                >
+                  Score & Studio
+                </TabsTrigger>
+                <TabsTrigger
+                  value={`${DYNAMIC_COLUMNS[2]},${DYNAMIC_COLUMNS[3]}`}
+                >
+                  Type & Year
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
         </div>
+
+        {/* --- TABLA --- */}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  // AQUI APLICAMOS LA CLASE PARA OCULTAR EN MOVIL
-                  // (Busca el meta.className que definimos en columns)
-                  const metaStyle = (
-                    header.column.columnDef.meta as unknown as {
-                      className: string;
-                    }
-                  )?.className;
+                  const metaStyle =
+                    (
+                      header.column.columnDef.meta as unknown as {
+                        className?: string;
+                      }
+                    )?.className || "";
 
                   return (
                     <TableHead key={header.id} className={metaStyle}>
@@ -170,15 +220,15 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => {
-                    // AQUI TAMBIEN APLICAMOS LA CLASE A LA CELDA
-                    const metaStyle = (
-                      cell.column.columnDef.meta as unknown as {
-                        className: string;
-                      }
-                    )?.className;
+                    const metaStyle =
+                      (
+                        cell.column.columnDef.meta as unknown as {
+                          className?: string;
+                        }
+                      )?.className || "";
 
                     return (
-                      <TableCell key={cell.id} className={`h-19 ${metaStyle}`}>
+                      <TableCell key={cell.id} className={`py-3 ${metaStyle}`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
@@ -200,13 +250,15 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
+
+        {/* --- PAGINACIÓN --- */}
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="text-muted-foreground flex-1 text-sm flex gap-4 items-center">
             <div className="h-full text-center">
               {table.getFilteredSelectedRowModel().rows.length} of{" "}
               {table.getFilteredRowModel().rows.length} row(s) selected.
             </div>
-            {/* --- BARRA DE HERRAMIENTAS / BULK ACTIONS --- */}
+
             <div className="hidden md:flex">
               {selectedRows.length > 0 && (
                 <Button
@@ -215,9 +267,8 @@ export function DataTable<TData, TValue>({
                   onClick={handleBulkDelete}
                   className="gap-2 animate-in fade-in slide-in-from-left-4"
                 >
-                  <Trash2 size="sm" />
-                  Eliminar Selección (
-                  {table.getFilteredSelectedRowModel().rows.length})
+                  <Trash2 size={16} />
+                  Eliminar ({table.getFilteredSelectedRowModel().rows.length})
                 </Button>
               )}
             </div>
@@ -241,10 +292,11 @@ export function DataTable<TData, TValue>({
           </Button>
         </div>
       </div>
-      {/* --- BARRA DE HERRAMIENTAS / BULK ACTIONS MOBILE --- */}
+
+      {/* --- BULK ACTIONS MOBILE --- */}
       {selectedRows.length > 0 && (
         <div className="flex items-center justify-between bg-destructive/10 p-2 rounded-md border border-destructive/20 text-destructive text-sm animate-in fade-in slide-in-from-top-2 md:hidden">
-          <span>{selectedRows.length} animes seleccionados</span>
+          <span>{selectedRows.length} seleccionados</span>
           <Button
             size="sm"
             variant="destructive"
@@ -252,7 +304,7 @@ export function DataTable<TData, TValue>({
             className="gap-2"
           >
             <Trash2 size={16} />
-            Delete Selection
+            Eliminar
           </Button>
         </div>
       )}

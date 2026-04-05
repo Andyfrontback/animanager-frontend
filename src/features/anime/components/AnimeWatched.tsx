@@ -32,7 +32,7 @@ export const AnimeWatched = () => {
         </SheetDescription>
       </SheetHeader>
       <div className="scrollbar overflow-y-auto px-4">
-        <DataTable columns={columns} data={watchedList} />
+        <DataTable columns={columns} data={watchedList} maxSheetSize />
       </div>
     </SheetContent>
   );
