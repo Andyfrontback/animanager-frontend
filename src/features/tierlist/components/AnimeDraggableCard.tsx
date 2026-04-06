@@ -1,10 +1,10 @@
 import { useSortable } from "@dnd-kit/react/sortable";
-import {
+/* import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/components/ui/tooltip"; */
 import type { Anime } from "@/models";
 
 interface AnimeDraggableCardProps {
@@ -13,7 +13,11 @@ interface AnimeDraggableCardProps {
   containerId: string;
 }
 
-export const AnimeDraggableCard = ({ anime, index, containerId }: AnimeDraggableCardProps) => {
+export const AnimeDraggableCard = ({
+  anime,
+  index,
+  containerId,
+}: AnimeDraggableCardProps) => {
   // Configuración del hook con la inyección de datos para el Overlay
   const { ref, isDragging } = useSortable({
     id: anime.mal_id,
@@ -53,7 +57,7 @@ export const AnimeDraggableCard = ({ anime, index, containerId }: AnimeDraggable
 
   // Restricción UX: Si estamos arrastrando, destruimos el TooltipProvider devolviendo solo la card.
   // Esto elimina de raíz cualquier artefacto visual en la pantalla.
-  if (isDragging) {
+  /* if (isDragging) {
     return cardContent;
   }
 
@@ -75,5 +79,7 @@ export const AnimeDraggableCard = ({ anime, index, containerId }: AnimeDraggable
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  );
+  ); */
+
+  return cardContent;
 };

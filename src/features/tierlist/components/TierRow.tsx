@@ -3,8 +3,7 @@ import { useDroppable } from "@dnd-kit/react";
 import type { TierCategory } from "@/stores/tierlist.store";
 import type { Anime } from "@/models";
 
-/* // Placeholder para el siguiente paso
-import { AnimeCard } from "./AnimeCard"; */
+import { AnimeDraggableCard } from "./AnimeDraggableCard";
 
 interface TierRowProps {
   category: TierCategory;
@@ -48,14 +47,14 @@ export const TierRow = ({ category, watchedList }: TierRowProps) => {
           isDropTarget ? "bg-white/5" : ""
         }`}
       >
-        {/* {rowAnimes.map((anime, index) => (
-          <AnimeCard
+        {rowAnimes.map((anime, index) => (
+          <AnimeDraggableCard
             key={anime.mal_id}
             anime={anime}
             index={index}
             containerId={category.id}
           />
-        ))} */}
+        ))}
 
         {/* Empty state para feedback visual si la fila está vacía */}
         {rowAnimes.length === 0 && (

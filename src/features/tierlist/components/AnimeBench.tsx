@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/react";
 import type { Anime } from "@/models";
-/* import { AnimeCard } from "./AnimeCard"; */
+import { AnimeDraggableCard } from "./AnimeDraggableCard";
 
 interface AnimeBenchProps {
   animes: Anime[];
@@ -27,14 +27,14 @@ export const AnimeBench = ({ animes, benchId }: AnimeBenchProps) => {
           : "bg-transparent border-neutral-800 border-dashed"
       }`}
     >
-      {/* {animes.map((anime, index) => (
-        <AnimeCard
+      {animes.map((anime, index) => (
+        <AnimeDraggableCard
           key={anime.mal_id}
           anime={anime}
           index={index}
           containerId={benchId}
         />
-      ))} */}
+      ))}
 
       {/* Empty State de Victoria */}
       {animes.length === 0 && (
