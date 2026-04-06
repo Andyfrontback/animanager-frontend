@@ -1,17 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// --- Custom Utilities ---
-function arrayMove<T>(array: T[], from: number, to: number): T[] {
-  const newArray = array.slice();
-  newArray.splice(
-    to < 0 ? newArray.length + to : to,
-    0,
-    newArray.splice(from, 1)[0],
-  );
-  return newArray;
-}
-
 export interface TierCategory {
   id: string;
   name: string;
@@ -21,159 +10,126 @@ export interface TierCategory {
 
 interface TierListState {
   categories: TierCategory[];
-
-  // --- DND Actions ---
-  reorderAnimeWithinCategory: (
-    categoryId: string,
-    oldIndex: number,
-    newIndex: number,
-  ) => void;
-  moveAnimeBetweenCategories: (
+  // Actions
+  moveAnime: (
     animeId: number,
-    sourceCategoryId: string,
-    targetCategoryId: string,
-    targetIndex: number,
+    sourceId: string | "bench",
+    destinationId: string | "bench",
+    newIndex?: number,
   ) => void;
-  addAnimeToCategory: (
-    animeId: number,
-    categoryId: string,
-    targetIndex?: number,
-  ) => void;
-  removeAnimeFromCategory: (animeId: number, categoryId: string) => void;
-  reorderCategories: (oldIndex: number, newIndex: number) => void;
-
-  // --- Category Management ---
-  addCategory: (category: Omit<TierCategory, "id" | "animeIds">) => void;
+  addCategory: (name: string, color: string) => void;
   updateCategory: (
     id: string,
-    data: Partial<Omit<TierCategory, "id" | "animeIds">>,
+    updates: Partial<Omit<TierCategory, "id" | "animeIds">>,
   ) => void;
-  removeCategory: (id: string) => void;
-
-  // --- Data Integrity ---
-  syncWithWatchedList: (validWatchedIds: number[]) => void;
+  reorderCategories: (oldIndex: number, newIndex: number) => void;
+  cleanInvalidIds: (validAnimeIds: number[]) => void;
 }
 
-const DEFAULT_CATEGORIES: TierCategory[] = [
-  { id: "s", name: "S", color: "#ff7f7f", animeIds: [] },
-  { id: "a", name: "A", color: "#ffbf7f", animeIds: [] },
-  { id: "b", name: "B", color: "#ffff7f", animeIds: [] },
-  { id: "c", name: "C", color: "#7fff7f", animeIds: [] },
-  { id: "d", name: "D", color: "#7fbfff", animeIds: [] },
+const defaultCategories: TierCategory[] = [
+  { id: "tier-s-plus", name: "S+", color: "#ef4444", animeIds: [] }, // Tailwind red-500
+  { id: "tier-s", name: "S", color: "#f97316", animeIds: [] }, // Tailwind orange-500
+  { id: "tier-a", name: "A", color: "#eab308", animeIds: [] }, // Tailwind yellow-500
+  { id: "tier-b", name: "B", color: "#22c55e", animeIds: [] }, // Tailwind green-500
+  { id: "tier-c", name: "C", color: "#3b82f6", animeIds: [] }, // Tailwind blue-500
+  { id: "tier-d", name: "D", color: "#6b7280", animeIds: [] }, // Tailwind gray-500
 ];
 
 export const useTierListStore = create<TierListState>()(
   persist(
     (set) => ({
-      categories: DEFAULT_CATEGORIES,
+      categories: defaultCategories,
 
-      reorderAnimeWithinCategory: (categoryId, oldIndex, newIndex) =>
-        set((state) => ({
-          categories: state.categories.map((cat) =>
-            cat.id === categoryId
-              ? {
-                  ...cat,
-                  animeIds: arrayMove(cat.animeIds, oldIndex, newIndex),
-                }
-              : cat,
-          ),
-        })),
-
-      moveAnimeBetweenCategories: (
-        animeId,
-        sourceCategoryId,
-        targetCategoryId,
-        targetIndex,
-      ) =>
+      // Lógica unificada para Drag and Drop
+      moveAnime: (animeId, sourceId, destinationId, newIndex) =>
         set((state) => {
-          return {
-            categories: state.categories.map((cat) => {
-              if (cat.id === sourceCategoryId) {
-                return {
-                  ...cat,
-                  animeIds: cat.animeIds.filter((id) => id !== animeId),
+          const newCategories = [...state.categories];
+
+          // 1. Remover del origen (si no viene de la banca)
+          if (sourceId !== "bench") {
+            const sourceIndex = newCategories.findIndex(
+              (c) => c.id === sourceId,
+            );
+            if (sourceIndex > -1) {
+              newCategories[sourceIndex] = {
+                ...newCategories[sourceIndex],
+                animeIds: newCategories[sourceIndex].animeIds.filter(
+                  (id) => id !== animeId,
+                ),
+              };
+            }
+          }
+
+          // 2. Insertar en el destino (si no va hacia la banca)
+          if (destinationId !== "bench") {
+            const destIndex = newCategories.findIndex(
+              (c) => c.id === destinationId,
+            );
+            if (destIndex > -1) {
+              const destIds = [...newCategories[destIndex].animeIds];
+              // Si no se especifica un índice válido, se inserta al final
+              const insertIndex =
+                newIndex !== undefined && newIndex >= 0
+                  ? newIndex
+                  : destIds.length;
+
+              // Evitar duplicados por seguridad
+              if (!destIds.includes(animeId)) {
+                destIds.splice(insertIndex, 0, animeId);
+                newCategories[destIndex] = {
+                  ...newCategories[destIndex],
+                  animeIds: destIds,
                 };
               }
-              if (cat.id === targetCategoryId) {
-                const newAnimeIds = [...cat.animeIds];
-                newAnimeIds.splice(targetIndex, 0, animeId);
-                return { ...cat, animeIds: newAnimeIds };
-              }
-              return cat;
-            }),
-          };
+            }
+          }
+
+          return { categories: newCategories };
         }),
 
-      addAnimeToCategory: (animeId, categoryId, targetIndex) =>
+      addCategory: (name, color) =>
         set((state) => ({
-          categories: state.categories.map((cat) => {
-            if (cat.id !== categoryId) return cat;
-
-            const newAnimeIds = [...cat.animeIds];
-            if (targetIndex !== undefined) {
-              newAnimeIds.splice(targetIndex, 0, animeId);
-            } else {
-              newAnimeIds.push(animeId);
-            }
-            return { ...cat, animeIds: newAnimeIds };
-          }),
+          categories: [
+            ...state.categories,
+            { id: crypto.randomUUID(), name, color, animeIds: [] },
+          ],
         })),
 
-      removeAnimeFromCategory: (animeId, categoryId) =>
+      updateCategory: (id, updates) =>
         set((state) => ({
           categories: state.categories.map((cat) =>
-            cat.id === categoryId
-              ? {
-                  ...cat,
-                  animeIds: cat.animeIds.filter((id) => id !== animeId),
-                }
-              : cat,
+            cat.id === id ? { ...cat, ...updates } : cat,
           ),
         })),
 
       reorderCategories: (oldIndex, newIndex) =>
-        set((state) => ({
-          categories: arrayMove(state.categories, oldIndex, newIndex),
-        })),
-
-      addCategory: (categoryData) =>
-        set((state) => ({
-          categories: [
-            ...state.categories,
-            { ...categoryData, id: crypto.randomUUID(), animeIds: [] },
-          ],
-        })),
-
-      updateCategory: (id, data) =>
-        set((state) => ({
-          categories: state.categories.map((cat) =>
-            cat.id === id ? { ...cat, ...data } : cat,
-          ),
-        })),
-
-      removeCategory: (id) =>
-        set((state) => ({
-          categories: state.categories.filter((cat) => cat.id !== id),
-        })),
-
-      syncWithWatchedList: (validWatchedIds) =>
         set((state) => {
-          const validIdsSet = new Set(validWatchedIds);
+          const newCategories = [...state.categories];
+          const [movedCategory] = newCategories.splice(oldIndex, 1);
+          newCategories.splice(newIndex, 0, movedCategory);
+          return { categories: newCategories };
+        }),
+
+      // Ejecutar esto en un useEffect en el contenedor principal o como middleware
+      cleanInvalidIds: (validAnimeIds) =>
+        set((state) => {
+          const validSet = new Set(validAnimeIds);
           let hasChanges = false;
 
-          const updatedCategories = state.categories.map((cat) => {
-            const filteredIds = cat.animeIds.filter((id) =>
-              validIdsSet.has(id),
-            );
+          const cleanedCategories = state.categories.map((cat) => {
+            const filteredIds = cat.animeIds.filter((id) => validSet.has(id));
             if (filteredIds.length !== cat.animeIds.length) {
               hasChanges = true;
+              return { ...cat, animeIds: filteredIds };
             }
-            return { ...cat, animeIds: filteredIds };
+            return cat;
           });
 
-          return hasChanges ? { categories: updatedCategories } : state;
+          return hasChanges ? { categories: cleanedCategories } : state;
         }),
     }),
-    { name: "tierlist-storage" },
+    {
+      name: "tier-list-storage",
+    },
   ),
 );
