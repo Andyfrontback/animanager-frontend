@@ -26,7 +26,7 @@ type ChartView = "genres" | "studios";
 const chartConfig = {
   count: {
     label: "Cantidad",
-    color: "oklch(0.6 0.25 280)",
+    color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
