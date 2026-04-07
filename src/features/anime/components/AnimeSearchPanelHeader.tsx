@@ -6,7 +6,7 @@ export const PanelHeader = () => (
       Search <span className="text-primary">Filters</span>
     </DialogTitle>
     <DialogDescription>
-      Ajusta los parámetros para encontrar tu próximo anime favorito.
+      Adjust the parameters to find your next favorite anime.
     </DialogDescription>
   </>
 );
