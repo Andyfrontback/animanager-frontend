@@ -1,7 +1,12 @@
 import { type ReactNode } from "react";
 import { useDroppable } from "@dnd-kit/react";
 import { CollisionPriority } from "@dnd-kit/abstract";
-import type { TierCategory } from "@/stores/tierlist.store";
+
+export interface TierCategory {
+  id: string;
+  name: string;
+  color: string;
+}
 
 interface TierRowProps {
   category: TierCategory;

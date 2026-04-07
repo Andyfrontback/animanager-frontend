@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  DragDropProvider
-} from "@dnd-kit/react";
+import React, { useEffect, useMemo, useState } from "react";
+import { DragDropProvider } from "@dnd-kit/react";
 import { move } from "@dnd-kit/helpers";
 
 // Stores & Models
@@ -18,6 +16,15 @@ import { TierRow } from "./TierRow";
 import { AnimeBench } from "./AnimeBench";
 import { AnimeDraggableCard } from "./AnimeDraggableCard";
 import { TierListDragOverlay } from "./TierListDragOverlay";
+
+// 6. Configuración de Filas
+const tiers: { id: TierId; name: string; color: string }[] = [
+  { id: "s", name: "S", color: "#ff7f7f" },
+  { id: "a", name: "A", color: "#ffbf7f" },
+  { id: "b", name: "B", color: "#ffff7f" },
+  { id: "c", name: "C", color: "#7fff7f" },
+  { id: "d", name: "D", color: "#7fbfff" },
+];
 
 export const TierListContainer = () => {
   // 1. Global State & Selectors
@@ -73,32 +80,23 @@ export const TierListContainer = () => {
     setLocalDistribution(distribution);
   }, [distribution]);
 
-  // 5. Handlers de dnd-kit
-  const handleDragOver = (event) => {
-    const { source } = event.operation;
-    if (source?.type !== "item") return;
+  // 5. Handlers de dnd-kit v0.3.2
+  // Extraemos el tipo exacto que espera el prop 'onDragOver' para evitar conflictos
+  const handleDragOver: NonNullable<
+    React.ComponentProps<typeof DragDropProvider>["onDragOver"]
+  > = (event) => {
+    const { operation } = event;
 
-    // 'move' se encarga de la lógica de reordenamiento e intercambio entre contenedores
+    if (operation.source?.type !== "item") return;
+
+    // 'move' ahora recibirá el evento con el tipo exacto que espera
     setLocalDistribution((prev) => move(prev, event));
   };
 
-  const handleDragEnd = (event) => {
-    if (event.canceled) {
-      setLocalDistribution(distribution); // Revertir si se cancela
-      return;
-    }
-    // Persistimos el movimiento optimista en el store global (Zustand -> LocalStorage)
+  const handleDragEnd = () => {
+    // Persistimos el movimiento en el store global (Zustand -> LocalStorage)
     setDistribution(localDistribution);
   };
-
-  // 6. Configuración de Filas
-  const tiers: { id: TierId; name: string; color: string }[] = [
-    { id: "s", name: "S", color: "#ff7f7f" },
-    { id: "a", name: "A", color: "#ffbf7f" },
-    { id: "b", name: "B", color: "#ffff7f" },
-    { id: "c", name: "C", color: "#7fff7f" },
-    { id: "d", name: "D", color: "#7fbfff" },
-  ];
 
   return (
     <DragDropProvider onDragOver={handleDragOver} onDragEnd={handleDragEnd}>

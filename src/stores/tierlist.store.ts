@@ -80,21 +80,3 @@ export const useTierListStore = create<TierListStore>()(
     },
   ),
 );
-
-// 5. Diseño de implementación del store
-export interface TierCategory {
-  id: string;
-  name: string;
-  color: string;
-}
-
-export const currentCategories: Record<
-  Exclude<TierId, "bench">,
-  TierCategory
-> = {
-  s: { id: "tier-s", name: "S", color: "#ef4444" }, // Tailwind red-500
-  a: { id: "tier-a", name: "A", color: "#eab308" }, // Tailwind yellow-500
-  b: { id: "tier-b", name: "B", color: "#22c55e" }, // Tailwind green-500
-  c: { id: "tier-c", name: "C", color: "#3b82f6" }, // Tailwind blue-500
-  d: { id: "tier-d", name: "D", color: "#6b7280" }, // Tailwind gray-500
-};
