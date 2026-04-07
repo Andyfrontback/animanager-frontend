@@ -6,25 +6,43 @@ import ErrorBoundary from "@/ErrorBoundary";
 import { AnimeList } from "@/features/anime/components/AnimeList";
 import { AnimeSearchPanel } from "@/features/anime/components/AnimeSearchPanel";
 import { DEFAULT_VALUES } from "@/features/anime/types/animeComp.types";
+import { useBrowserStore } from "@/stores/browser.store";
 
 export const AnimeListPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { lastSearchParams, setLastSearchParams } = useBrowserStore();
 
-  // 1. Lógica de inicialización inteligente
+  // EFECTO 1: Inicialización Inteligente (Solo al montar)
   useEffect(() => {
-    // Si la URL ya tiene parámetros (ej. ?q=naruto), no tocamos nada.
+    // Si la URL ya trae algo (ej: vienes de un link externo), respetamos la URL.
     if (searchParams.toString() !== "") return;
 
-    // Si está vacía, aplicamos los defaults.
-    // TIP: Aquí podrías preguntar primero a un store de Zustand persistente
-    // para recuperar la "última búsqueda" del usuario.
-    const params = new URLSearchParams();
-    Object.entries(DEFAULT_VALUES).forEach(([key, value]) => {
-      if (value) params.set(key, value.toString());
-    });
+    const hasStoredParams = Object.keys(lastSearchParams).length > 0;
 
-    setSearchParams(params, { replace: true });
-  }, [searchParams, setSearchParams]);
+    if (hasStoredParams) {
+      // Prioridad 1: Recuperar lo que el usuario estaba haciendo antes
+      setSearchParams(lastSearchParams, { replace: true });
+    } else {
+      // Prioridad 2: Si es la primera vez, usar los valores por defecto
+      const defaultParams = Object.fromEntries(
+        Object.entries(DEFAULT_VALUES).filter(([, v]) => v != null),
+      ) as Record<string, string>;
+
+      setSearchParams(defaultParams, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Solo al montar
+
+  // EFECTO 2: Sincronización URL -> Store
+  // Este efecto corre cada vez que searchParams cambia, manteniendo el Store al día.
+  useEffect(() => {
+    const currentParams = Object.fromEntries(searchParams.entries());
+
+    // Evitamos actualizar si está vacío (para no pisar el store al entrar a la página)
+    if (Object.keys(currentParams).length > 0) {
+      setLastSearchParams(currentParams);
+    }
+  }, [searchParams, setLastSearchParams]);
 
   return (
     <>
@@ -47,7 +65,7 @@ export const AnimeListPage = () => {
       </Helmet>
 
       {/* ESTRUCTURA SEMÁNTICA: <main> para el contenido principal */}
-      <main className="min-h-screen w-full py-6 px-4 md:px-8 space-y-8">
+      <main className="min-h-screen w-full py-6 px-4 md:px-0 space-y-8">
         {/* Encabezado con jerarquía clara */}
         <header className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
