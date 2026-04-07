@@ -6,11 +6,11 @@ import { TiltCard } from "@/features/home/components/TiltCard";
 import { Button } from "@/components/ui/button";
 
 // Assets
-import maomaoImg from "@/assets/imgs/Maomao.jpg";
+import maomaoImg from "@/assets/imgs/Maomao.webp";
 import rezeImg from "@/assets/imgs/reze.jpg";
-import kaguyaImg from "@/assets/imgs/kaguyaShinomiya.jpg";
+import kaguyaImg from "@/assets/imgs/kaguya.jpg";
 import kohakuImg from "@/assets/imgs/Kohaku.jpg";
-import frierenImg from "@/assets/imgs/frieren.jpeg";
+import alyaImg from "@/assets/imgs/alya.webp";
 
 export const HomePage = () => {
   return (
@@ -25,7 +25,7 @@ export const HomePage = () => {
           property="og:title"
           content="AniManager - Anime Analytics & Tierlists"
         />
-        <meta property="og:image" content={frierenImg} />
+        <meta property="og:image" content={alyaImg} />
       </Helmet>
 
       <main className="min-h-screen flex flex-col bg-background selection:bg-primary/30">
@@ -95,7 +95,7 @@ export const HomePage = () => {
             <TiltCard
               title="Tier Lists"
               description="Smooth drag and drop to rank your favorites."
-              image={frierenImg}
+              image={alyaImg}
               layoutType="vertical"
               cardHref="/private/anime/tierlist"
             />
@@ -120,34 +120,6 @@ export const HomePage = () => {
             />
           </article>
         </BentoGrid>
-
-        <footer className="mt-auto border-t border-border/50 bg-card/20 py-16">
-          <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="space-y-2 text-center md:text-left">
-              <p className="text-2xl font-black italic uppercase tracking-tighter">
-                Ani<span className="text-primary">Manager</span>
-              </p>
-              <p className="text-muted-foreground text-sm font-medium">
-                © {new Date().getFullYear()}
-              </p>
-            </div>
-
-            <nav className="flex gap-10" aria-label="Social links">
-              <a
-                href="https://github.com/andyfrontback"
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest"
-              >
-                GitHub
-              </a>
-              <span className="text-muted-foreground/30">|</span>
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
-                Andrés
-              </p>
-            </nav>
-          </div>
-        </footer>
       </main>
     </>
   );

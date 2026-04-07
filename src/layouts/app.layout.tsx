@@ -36,6 +36,33 @@ export default function Layout() {
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Outlet />
         </div>
+        <footer className="mt-auto border-t border-border/50 bg-card/20 py-16">
+          <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="space-y-2 text-center md:text-left">
+              <p className="text-2xl font-black italic uppercase tracking-tighter">
+                Ani<span className="text-primary">Manager</span>
+              </p>
+              <p className="text-muted-foreground text-sm font-medium">
+                © {new Date().getFullYear()}
+              </p>
+            </div>
+
+            <nav className="flex gap-10" aria-label="Social links">
+              <a
+                href="https://github.com/andyfrontback"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest"
+              >
+                GitHub
+              </a>
+              <span className="text-muted-foreground/30">|</span>
+              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+                Andrés
+              </p>
+            </nav>
+          </div>
+        </footer>
       </SidebarInset>
     </SidebarProvider>
   );
