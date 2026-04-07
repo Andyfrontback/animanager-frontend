@@ -47,31 +47,26 @@ export const TierListContainer = () => {
     const validIds = new Set(animeMap.keys());
     const allDistributedIds = new Set(Object.values(distribution).flat());
 
-    // A. Detectar huérfanos (animes en tierlist que ya no están en watchedList)
-    const hasOrphans = Object.values(distribution).some((tier) =>
-      tier.some((id) => !validIds.has(id)),
+    // Solo calculamos si hay cambios reales necesarios
+    const orphans = Object.values(distribution)
+      .flat()
+      .some((id) => !validIds.has(id));
+    const newAnimes = watchedList.filter(
+      (a) => !allDistributedIds.has(a.mal_id),
     );
 
-    // B. Detectar nuevos (animes en watchedList que no están clasificados)
-    const newAnimes = watchedList
-      .filter((a) => !allDistributedIds.has(a.mal_id))
-      .map((a) => a.mal_id);
+    if (orphans || newAnimes.length > 0) {
+      const updated = { ...distribution };
 
-    if (hasOrphans || newAnimes.length > 0) {
-      const updatedDistribution = { ...distribution };
-
-      // Limpiar IDs inválidos en todas las categorías
-      (Object.keys(updatedDistribution) as TierId[]).forEach((key) => {
-        updatedDistribution[key] = updatedDistribution[key].filter((id) =>
-          validIds.has(id),
-        );
+      // Limpieza y adición
+      (Object.keys(updated) as TierId[]).forEach((k) => {
+        updated[k] = updated[k].filter((id) => validIds.has(id));
       });
 
-      // Insertar los nuevos en la banca
-      updatedDistribution.bench = [...updatedDistribution.bench, ...newAnimes];
+      updated.bench = [...updated.bench, ...newAnimes.map((a) => a.mal_id)];
 
-      setDistribution(updatedDistribution);
-      setLocalDistribution(updatedDistribution);
+      setDistribution(updated);
+      setLocalDistribution(updated);
     }
   }, [watchedList, animeMap, distribution, setDistribution]);
 
@@ -85,17 +80,43 @@ export const TierListContainer = () => {
   const handleDragOver: NonNullable<
     React.ComponentProps<typeof DragDropProvider>["onDragOver"]
   > = (event) => {
-    const { operation } = event;
-
-    if (operation.source?.type !== "item") return;
-
-    // 'move' ahora recibirá el evento con el tipo exacto que espera
+    if (event.operation.source?.type !== "item") return;
     setLocalDistribution((prev) => move(prev, event));
   };
 
-  const handleDragEnd = () => {
-    // Persistimos el movimiento en el store global (Zustand -> LocalStorage)
+  const handleDragEnd: NonNullable<
+    React.ComponentProps<typeof DragDropProvider>["onDragEnd"]
+  > = (event) => {
+    // IMPORTANTE: Si se cancela, revertimos al estado del store (el último persistido)
+    if (event.canceled) {
+      setLocalDistribution(distribution);
+      return;
+    }
     setDistribution(localDistribution);
+  };
+
+  // 6. Helper de Renderizado para evitar duplicidad
+  const renderAnimeCards = (ids: number[], containerId: string) => {
+    return ids.map((id, index) => {
+      const anime = animeMap.get(id);
+      if (!anime) return null;
+      return (
+        <AnimeDraggableCard
+          key={id}
+          anime={anime}
+          index={index}
+          containerId={containerId}
+        />
+      );
+    });
+  };
+
+  const renderBenchMessage = (text: string) => {
+    return (
+      <div className="w-full py-10 flex flex-col items-center justify-center text-neutral-500 italic">
+        <p>{text}</p>
+      </div>
+    );
   };
 
   return (
@@ -104,25 +125,14 @@ export const TierListContainer = () => {
         {/* Tier Rows Section */}
         <div className="flex flex-col rounded-lg overflow-hidden border border-neutral-800 shadow-2xl">
           {tiers.map((tier) => (
-            <TierRow key={tier.id} category={{ ...tier }}>
-              {localDistribution[tier.id].length === 0 && (
-                <div className="w-full min-h-20 flex items-center justify-center text-neutral-600 text-sm font-medium border-2 border-dashed border-neutral-700/50 rounded-lg pointer-events-none">
+            <TierRow key={tier.id} category={tier}>
+              {localDistribution[tier.id].length === 0 ? (
+                <div className="w-full min-h-20 flex items-center justify-center text-neutral-600 text-xs font-bold border-2 border-dashed border-neutral-700/50 rounded-lg uppercase tracking-widest pointer-events-none">
                   Drag anime here
                 </div>
+              ) : (
+                renderAnimeCards(localDistribution[tier.id], tier.id)
               )}
-
-              {localDistribution[tier.id].map((id, index) => {
-                const anime = animeMap.get(id);
-                if (!anime) return null;
-                return (
-                  <AnimeDraggableCard
-                    key={id}
-                    anime={anime}
-                    index={index}
-                    containerId={tier.id}
-                  />
-                );
-              })}
             </TierRow>
           ))}
         </div>
@@ -139,23 +149,13 @@ export const TierListContainer = () => {
           </div>
 
           <AnimeBench benchId="bench">
-            {localDistribution.bench.length === 0 && (
-                <div className="w-full flex items-center justify-center text-neutral-500 text-sm md:text-base font-medium pointer-events-none select-none">
-                ✨ All anime have been ranked ✨
-                </div>
-            )}
-            {localDistribution.bench.map((id, index) => {
-              const anime = animeMap.get(id);
-              if (!anime) return null;
-              return (
-                <AnimeDraggableCard
-                  key={id}
-                  anime={anime}
-                  index={index}
-                  containerId="bench"
-                />
-              );
-            })}
+            {watchedList.length === 0
+              ? renderBenchMessage(
+                  "✨ Start by adding anime to your watched list ✨",
+                )
+              : localDistribution.bench.length === 0
+                ? renderBenchMessage("✨ All anime have been ranked ✨")
+                : renderAnimeCards(localDistribution.bench, "bench")}
           </AnimeBench>
         </div>
       </div>
