@@ -23,7 +23,7 @@ export function AnimeStatsCards({
   const totalHours = (totalMinutes / 60).toFixed(1);
 
   return (
-    <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:shadow-xs lg:px-6 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs sm:grid-cols-2 xl:grid-cols-4">
       {/* Total Hours */}
       <Card className="@container/card">
         <CardHeader className="pb-2">

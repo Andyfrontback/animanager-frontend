@@ -1,21 +1,18 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Importa tus nuevos componentes y hooks
+// Componentes y Hooks
 import { AnimeStatsCards } from "@/features/dashboard/components/SectionCard";
 import { InteractiveStatsChart } from "@/features/dashboard/components/BarChartInteractive";
 import { useAnimeStats } from "@/features/dashboard/hooks/useAnimeStats.ts";
-
-// Importa el DataTable
 import { columns } from "@/features/anime/components/WatchedDataTable/columns";
 import { DataTable } from "@/features/anime/components/WatchedDataTable/data-table";
-
-// Importamos la store
 import { useWatchedStore } from "@/stores";
 
-// Helper para sacar el item más frecuente de un Record<string, number>
+// Helper
 const getTopItem = (frequencyMap: Record<string, number> = {}): string => {
   const entries = Object.entries(frequencyMap);
   if (entries.length === 0) return "N/A";
@@ -25,25 +22,9 @@ const getTopItem = (frequencyMap: Record<string, number> = {}): string => {
 };
 
 export function DashboardPage() {
-  // Accesibilidad y Meta Tags
-  useEffect(() => {
-    document.title = "Dashboard";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute(
-        "content",
-        "Métricas avanzadas y estadísticas de tu Watched List de anime.",
-      );
-    }
-  }, []);
-
-  // recuperamos la store
   const watchedList = useWatchedStore((state) => state.watchedList);
-
-  // Orquestación de datos (Web Worker)
   const { stats, isLoading, error } = useAnimeStats("sync");
 
-  // Derivamos los datos tope memoizados para no recalcular en cada render
   const topItems = useMemo(() => {
     if (!stats) return { topGenre: "N/A", favoriteStudio: "N/A" };
     return {
@@ -53,28 +34,60 @@ export function DashboardPage() {
   }, [stats]);
 
   return (
-    <main className="flex flex-1 flex-col" aria-label="Dashboard Principal">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          {/* Manejo de estados (Error / Loading / Success) */}
+    <>
+      <Helmet>
+        <title>Dashboard</title>
+        <meta
+          name="description"
+          content="Visualiza estadísticas detalladas, tiempo de visualización y análisis de tu lista de anime."
+        />
+        <meta name="robots" content="noindex, nofollow" />{" "}
+        {/* Dashboard suele ser privado/personal */}
+      </Helmet>
+
+      <main className="flex-1 space-y-6 p-4 md:p-8 pt-6" id="dashboard-main">
+        {/* ENCABEZADO DE PÁGINA */}
+        <header className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-3xl font-black uppercase italic tracking-tighter">
+              User <span className="text-primary">Dashboard</span>
+            </h1>
+            <p className="text-muted-foreground text-sm">
+              Advanced analytics of your personal anime collection.
+            </p>
+          </div>
+          {/* Aquí podrías poner un botón de "Exportar Reporte" en el futuro */}
+        </header>
+
+        <div className="space-y-8">
           {error ? (
-            <div className="px-4 text-red-500">
-              Error loading statistics: {error.message}
+            <div
+              role="alert"
+              className="p-4 rounded-lg bg-destructive/10 text-destructive border border-destructive/20"
+            >
+              <h2 className="font-bold text-lg">Failed to Load Statistics</h2>
+              <p>We couldn't process your stats: {error.message}</p>
             </div>
           ) : isLoading || !stats ? (
-            // Skeletons de carga
-            <div className="px-4 lg:px-6 space-y-6">
+            <section
+              aria-busy="true"
+              aria-label="Cargando estadísticas"
+              className="space-y-6"
+            >
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                 {[1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} className="h-30 w-full rounded-xl" />
+                  <Skeleton key={i} className="h-32 w-full rounded-xl" />
                 ))}
               </div>
               <Skeleton className="h-100 w-full rounded-xl" />
-            </div>
+            </section>
           ) : (
-            // Renderizado Exitoso
             <>
-              <section aria-label="Tarjetas de Métricas">
+              {/* SECCIÓN 1: MÉTRICAS RÁPIDAS */}
+              <section aria-labelledby="metrics-heading">
+                <h2 id="metrics-heading" className="sr-only">
+                  Resumen de Métricas
+                </h2>
                 <AnimeStatsCards
                   totalMinutes={stats.totalMinutes}
                   avgScore={stats.averageScore}
@@ -83,28 +96,50 @@ export function DashboardPage() {
                 />
               </section>
 
+              {/* SECCIÓN 2: GRÁFICOS INTERACTIVOS */}
               <section
-                className="px-4 lg:px-6"
-                aria-label="Gráfico de Estadísticas"
+                className="rounded-xl border bg-card p-2 shadow-sm"
+                aria-labelledby="charts-heading"
               >
-                <InteractiveStatsChart
-                  genreFrequency={stats.genreFrequency}
-                  studioFrequency={stats.studioFrequency}
-                />
+                <div className="p-4 border-b mb-4">
+                  <h2
+                    id="charts-heading"
+                    className="text-lg font-bold uppercase tracking-tight"
+                  >
+                    Genre and Studio Distribution
+                  </h2>
+                </div>
+                <div>
+                  <InteractiveStatsChart
+                    genreFrequency={stats.genreFrequency}
+                    studioFrequency={stats.studioFrequency}
+                  />
+                </div>
               </section>
             </>
           )}
 
-          {/* Aquí irá el data table */}
-          <section className="px-4 lg:px-6" aria-label="Tabla de animes vistos">
-            <DataTable
-              columns={columns}
-              data={watchedList}
-              maxSheetSize={false}
-            />
+          {/* SECCIÓN 3: LISTADO DETALLADO */}
+          <section className="space-y-4" aria-labelledby="table-heading">
+            <div className="flex items-center justify-between">
+              <h2
+                id="table-heading"
+                className="text-xl font-black uppercase italic tracking-tight"
+              >
+                Detailed <span className="text-primary">History</span>
+              </h2>
+            </div>
+
+            <div className="rounded-md border bg-card shadow-sm">
+              <DataTable
+                columns={columns}
+                data={watchedList}
+                maxSheetSize={false}
+              />
+            </div>
           </section>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
