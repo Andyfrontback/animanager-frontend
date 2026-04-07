@@ -1,10 +1,10 @@
 import { useSortable } from "@dnd-kit/react/sortable";
-/* import {
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"; */
+} from "@/components/ui/tooltip";
 import type { Anime } from "@/models";
 
 interface AnimeDraggableCardProps {
@@ -62,7 +62,7 @@ export const AnimeDraggableCard = ({
   // Esto elimina de raíz cualquier artefacto visual en la pantalla.
   /* if (isDragging) {
     return cardContent;
-  }
+  } */
 
   return (
     <TooltipProvider delayDuration={300}>
@@ -77,12 +77,10 @@ export const AnimeDraggableCard = ({
             {anime.genres?.map((g) => g.name).join(", ") || "No genres"}
           </p>
           <p className="text-xs text-neutral-500 mt-1">
-            Episodios: {anime.episodes || "?"}
+            Episodes: {anime.episodes || "?"}
           </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  ); */
-
-  return cardContent;
+  );
 };

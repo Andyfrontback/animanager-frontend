@@ -43,14 +43,9 @@ export const TierRow = ({ category, children }: TierRowProps) => {
         ref={ref}
         className={`flex-1 p-3 flex flex-wrap gap-2 md:gap-3 transition-colors duration-200 ${
           isDropTarget ? "bg-white/5" : ""
-        }`}
+        } min-h-40`}
       >
         {children}
-
-        {/* Empty state para feedback visual si la fila está vacía */}
-        {/* <div className="w-full min-h-20 flex items-center justify-center text-neutral-600 text-sm font-medium border-2 border-dashed border-neutral-700/50 rounded-lg pointer-events-none">
-          Arrastra animes aquí
-        </div> */}
       </div>
     </div>
   );

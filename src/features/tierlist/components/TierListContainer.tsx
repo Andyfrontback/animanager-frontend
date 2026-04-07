@@ -105,6 +105,12 @@ export const TierListContainer = () => {
         <div className="flex flex-col rounded-lg overflow-hidden border border-neutral-800 shadow-2xl">
           {tiers.map((tier) => (
             <TierRow key={tier.id} category={{ ...tier }}>
+              {localDistribution[tier.id].length === 0 && (
+                <div className="w-full min-h-20 flex items-center justify-center text-neutral-600 text-sm font-medium border-2 border-dashed border-neutral-700/50 rounded-lg pointer-events-none">
+                  Drag anime here
+                </div>
+              )}
+
               {localDistribution[tier.id].map((id, index) => {
                 const anime = animeMap.get(id);
                 if (!anime) return null;
@@ -125,14 +131,19 @@ export const TierListContainer = () => {
         <div className="mt-8 space-y-4">
           <div className="flex items-center justify-between px-2">
             <h3 className="text-xl font-bold text-neutral-200 tracking-tight">
-              Banca de Espera
+              Unranked
               <span className="ml-3 text-sm font-normal text-neutral-500">
-                ({localDistribution.bench.length} animes sin clasificar)
+                ({localDistribution.bench.length} unranked anime)
               </span>
             </h3>
           </div>
 
           <AnimeBench benchId="bench">
+            {localDistribution.bench.length === 0 && (
+                <div className="w-full flex items-center justify-center text-neutral-500 text-sm md:text-base font-medium pointer-events-none select-none">
+                ✨ All anime have been ranked ✨
+                </div>
+            )}
             {localDistribution.bench.map((id, index) => {
               const anime = animeMap.get(id);
               if (!anime) return null;

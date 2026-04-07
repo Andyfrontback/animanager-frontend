@@ -31,12 +31,6 @@ export const AnimeBench = ({ benchId, children }: AnimeBenchProps) => {
       }`}
     >
       {children}
-
-      {/* Empty State de Victoria */}
-
-      {/* <div className="w-full flex items-center justify-center text-neutral-500 text-sm md:text-base font-medium pointer-events-none select-none">
-          ✨ Todos los animes han sido clasificados ✨
-        </div> */}
     </div>
   );
 };
