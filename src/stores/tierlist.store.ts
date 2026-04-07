@@ -1,57 +1,82 @@
+// store/useTierListStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export interface TierCategory {
-  id: string;
-  name: string;
-  color: string;
-  animeIds: number[];
-}
+// 1. Tipados estrictos para las filas y la distribución
+export type TierId = "s" | "a" | "b" | "c" | "d" | "bench";
 
+export type TierDistribution = Record<TierId, number[]>;
+
+// 2. Interfaz del Estado y las Acciones
 interface TierListState {
-  categories: Record<string, string[]>;
-  // Actions
-  updateAllCategories: (categories: Record<string, string[]>) => void;
-  /* moveAnime: (
-    animeId: number,
-    sourceId: string | "bench",
-    destinationId: string | "bench",
-    newIndex?: number,
-  ) => void;
-  addCategory: (name: string, color: string) => void;
-  updateCategory: (
-    id: string,
-    updates: Partial<Omit<TierCategory, "id" | "animeIds">>,
-  ) => void;
-  reorderCategories: (oldIndex: number, newIndex: number) => void;
-  cleanInvalidIds: (validAnimeIds: number[]) => void; */
+  distribution: TierDistribution;
 }
 
-/* const defaultCategories: TierCategory[] = [
-  { id: "tier-s-plus", name: "S+", color: "#ef4444", animeIds: [] }, // Tailwind red-500
-  { id: "tier-s", name: "S", color: "#f97316", animeIds: [] }, // Tailwind orange-500
-  { id: "tier-a", name: "A", color: "#eab308", animeIds: [] }, // Tailwind yellow-500
-  { id: "tier-b", name: "B", color: "#22c55e", animeIds: [] }, // Tailwind green-500
-  { id: "tier-c", name: "C", color: "#3b82f6", animeIds: [] }, // Tailwind blue-500
-  { id: "tier-d", name: "D", color: "#6b7280", animeIds: [] }, // Tailwind gray-500
-]; */
+interface TierListActions {
+  // Actualiza toda la distribución (ideal para onDragEnd)
+  setDistribution: (newDistribution: TierDistribution) => void;
+  // Limpia IDs que ya no existen en la watchedList
+  syncWithWatchedList: (validIds: Set<number>) => void;
+  // Resetea todo a la banca
+  resetToBench: () => void;
+}
 
-const defaultTest = {
-  A: ["A0", "A1", "A2"],
-  B: ["B0", "B1"],
-  C: ["C0"],
-  bench: ["D1", "D2"],
+export type TierListStore = TierListState & TierListActions;
+
+// 3. Estado inicial por defecto
+const initialDistribution: TierDistribution = {
+  s: [],
+  a: [],
+  b: [],
+  c: [],
+  d: [],
+  bench: [],
 };
 
-export const useTierListStore = create<TierListState>()(
+// 4. Creación del Store con persistencia
+export const useTierListStore = create<TierListStore>()(
   persist(
     (set) => ({
-      categories: defaultTest,
+      distribution: initialDistribution,
 
-      updateAllCategories: (categories) => set({ categories }),
+      setDistribution: (newDistribution) =>
+        set({ distribution: newDistribution }),
+
+      syncWithWatchedList: (validIds) =>
+        set((state) => {
+          const newDistribution = { ...state.distribution };
+          let hasChanges = false;
+
+          // Iteramos sobre cada tier para filtrar los IDs huérfanos
+          (Object.keys(newDistribution) as TierId[]).forEach((tier) => {
+            const currentIds = newDistribution[tier];
+            const filteredIds = currentIds.filter((id) => validIds.has(id));
+
+            if (currentIds.length !== filteredIds.length) {
+              newDistribution[tier] = filteredIds;
+              hasChanges = true;
+            }
+          });
+
+          // Solo actualizamos el estado si hubo cambios reales para evitar re-renders innecesarios
+          return hasChanges ? { distribution: newDistribution } : {};
+        }),
+
+      resetToBench: () =>
+        set((state) => {
+          const allIds = Object.values(state.distribution).flat();
+          return {
+            distribution: {
+              ...initialDistribution,
+              bench: allIds, // Movemos todos los IDs a la banca
+            },
+          };
+        }),
     }),
     {
-      name: "tier-list-storage",
+      name: "tierlist-storage",
+      // Opcional: Puedes omitir acciones o filtrar qué se guarda,
+      // pero por ahora guardar todo el objeto `distribution` es perfecto.
     },
   ),
 );
