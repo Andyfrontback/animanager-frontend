@@ -1,28 +1,21 @@
-import { useMemo } from "react";
+import { type ReactNode } from "react";
 import { useDroppable } from "@dnd-kit/react";
 import type { TierCategory } from "@/stores/tierlist.store";
-import type { Anime } from "@/models";
-
-import { AnimeDraggableCard } from "./AnimeDraggableCard";
+import { CollisionPriority } from "@dnd-kit/abstract";
 
 interface TierRowProps {
   category: TierCategory;
-  watchedList: Anime[];
+  children: ReactNode;
 }
 
-export const TierRow = ({ category, watchedList }: TierRowProps) => {
-  // 1. El "Join": Filtramos los animes de la watchedList usando los IDs de esta categoría.
-  // Es crucial hacer un map sobre animeIds para mantener el orden estricto de la Tier List.
-  const rowAnimes = useMemo(() => {
-    return category.animeIds
-      .map((id) => watchedList.find((anime) => anime.mal_id === id))
-      .filter((anime): anime is Anime => anime !== undefined);
-  }, [category.animeIds, watchedList]);
-
-  // 2. Definimos la fila entera como un Droppable Target.
+export const TierRow = ({ category, children }: TierRowProps) => {
+  // 1. Definimos la fila entera como un Droppable Target.
   // Inyectamos el containerId en la propiedad `data` para que el DragMonitor lo lea fácilmente.
   const { ref, isDropTarget } = useDroppable({
     id: category.id,
+    type: "column",
+    accept: "item",
+    collisionPriority: CollisionPriority.Low,
     data: {
       containerId: category.id,
     },
@@ -47,21 +40,12 @@ export const TierRow = ({ category, watchedList }: TierRowProps) => {
           isDropTarget ? "bg-white/5" : ""
         }`}
       >
-        {rowAnimes.map((anime, index) => (
-          <AnimeDraggableCard
-            key={anime.mal_id}
-            anime={anime}
-            index={index}
-            containerId={category.id}
-          />
-        ))}
+        {children}
 
         {/* Empty state para feedback visual si la fila está vacía */}
-        {rowAnimes.length === 0 && (
-          <div className="w-full min-h-20 flex items-center justify-center text-neutral-600 text-sm font-medium border-2 border-dashed border-neutral-700/50 rounded-lg pointer-events-none">
-            Arrastra animes aquí
-          </div>
-        )}
+        {/* <div className="w-full min-h-20 flex items-center justify-center text-neutral-600 text-sm font-medium border-2 border-dashed border-neutral-700/50 rounded-lg pointer-events-none">
+          Arrastra animes aquí
+        </div> */}
       </div>
     </div>
   );

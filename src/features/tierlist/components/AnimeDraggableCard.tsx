@@ -22,6 +22,9 @@ export const AnimeDraggableCard = ({
   const { ref, isDragging } = useSortable({
     id: anime.mal_id,
     index,
+    type: "item",
+    accept: "item",
+    group: containerId,
     data: {
       containerId,
       anime, // ¡Clave! Pasamos la data al DragOverlay
@@ -55,7 +58,7 @@ export const AnimeDraggableCard = ({
     </div>
   );
 
-  // Restricción UX: Si estamos arrastrando, destruimos el TooltipProvider devolviendo solo la card.
+  // La implementaré en un futuro si veo que todo está bien, Restricción UX: Si estamos arrastrando, destruimos el TooltipProvider devolviendo solo la card.
   // Esto elimina de raíz cualquier artefacto visual en la pantalla.
   /* if (isDragging) {
     return cardContent;

@@ -1,18 +1,21 @@
 import { useDroppable } from "@dnd-kit/react";
-import type { Anime } from "@/models";
-import { AnimeDraggableCard } from "./AnimeDraggableCard";
+import { CollisionPriority } from "@dnd-kit/abstract";
+import type { ReactNode } from "react";
 
 interface AnimeBenchProps {
-  animes: Anime[];
   benchId: string;
+  children: ReactNode;
 }
 
-export const AnimeBench = ({ animes, benchId }: AnimeBenchProps) => {
+export const AnimeBench = ({ benchId, children }: AnimeBenchProps) => {
   // 1. Configuramos la banca como un contenedor Droppable.
   // Es vital pasar el benchId en la propiedad data para que el DragMonitor
   // sepa interpretar cuándo un anime vuelve a la banca.
   const { ref, isDropTarget } = useDroppable({
     id: benchId,
+    type: "column",
+    accept: "item",
+    collisionPriority: CollisionPriority.Low,
     data: {
       containerId: benchId,
     },
@@ -27,21 +30,13 @@ export const AnimeBench = ({ animes, benchId }: AnimeBenchProps) => {
           : "bg-transparent border-neutral-800 border-dashed"
       }`}
     >
-      {animes.map((anime, index) => (
-        <AnimeDraggableCard
-          key={anime.mal_id}
-          anime={anime}
-          index={index}
-          containerId={benchId}
-        />
-      ))}
+      {children}
 
       {/* Empty State de Victoria */}
-      {animes.length === 0 && (
-        <div className="w-full flex items-center justify-center text-neutral-500 text-sm md:text-base font-medium pointer-events-none select-none">
+
+      {/* <div className="w-full flex items-center justify-center text-neutral-500 text-sm md:text-base font-medium pointer-events-none select-none">
           ✨ Todos los animes han sido clasificados ✨
-        </div>
-      )}
+        </div> */}
     </div>
   );
 };
