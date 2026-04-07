@@ -65,7 +65,7 @@ export const AnimeListPage = () => {
       </Helmet>
 
       {/* ESTRUCTURA SEMÁNTICA: <main> para el contenido principal */}
-      <main className="min-h-screen w-full py-6 px-4 md:px-0 space-y-8">
+      <main className="min-h-screen w-full py-6 px-4 md:px-8 space-y-8">
         {/* Encabezado con jerarquía clara */}
         <header className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">

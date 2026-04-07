@@ -6,22 +6,13 @@ import {
   type SearchPanelInput,
   type SearchPanelSchema,
 } from "../schemas/anime.schema";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { FieldGroup } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { DatePickerForm } from "./SearchPanelForm/DatePickerForm";
 import { SelectForm } from "./SearchPanelForm/SelectForm";
 import { InputForm } from "./SearchPanelForm/InputForm";
 import { useSearchParams } from "react-router";
 import { useCallback, useEffect, useMemo, type ReactNode } from "react";
-import { DEFAULT_VALUES } from "../types/animeComp.types";                            
+import { DEFAULT_VALUES } from "../types/animeComp.types";
 
 // Constantes fuera del componente para evitar recreación
 const ORDER_OPTIONS = [
@@ -113,88 +104,99 @@ export const AnimeSearchForm = ({ children }: AnimeSearchFormProps) => {
   }, [reset, setSearchParams]);
 
   return (
-    <Card className="w-full sm:max-w-md md:max-w-lg lg:max-w-xl border-none shadow-none sm:border sm:shadow-sm">
-      <CardHeader>
-        <CardTitle>Search Panel</CardTitle>
-        <CardDescription>Filter anime by score, date, or name.</CardDescription>
-      </CardHeader>
+    // Ya no necesitamos CardHeader/CardTitle aquí si el Dialog ya los tiene
+    <div className="w-full space-y-6">
+      <form
+        id="anime-search-form"
+        role="search" // A11y: Define explícitamente que esto es una búsqueda
+        onSubmit={(e) => e.preventDefault()}
+        className="space-y-6"
+      >
+        {/* Grupo 1: Búsqueda por Texto */}
+        <div className="space-y-2">
+          <InputForm
+            control={control}
+            name="q"
+            label="Anime Title"
+            placeholder="Ej: Shingeki no Kyojin..."
+            withSearchIcon={true}
+            error={errors.q}
+            onInputBlur={(val) => handleQueryParams("q", val)}
+          />
+        </div>
 
-      <CardContent className="space-y-4">
-        {/* space-y-4 da espaciado uniforme */}
-        <form id="anime-search-form" onSubmit={(e) => e.preventDefault()}>
-          <FieldGroup className="gap-4">
-            {/* Buscador Principal */}
-            <InputForm
+        {/* Grupo 2: Rango de Fechas (Uso de fieldset para semántica) */}
+        <fieldset className="space-y-3">
+          <legend className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+            Release Period
+          </legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <DatePickerForm
               control={control}
-              name="q"
-              label="Title"
-              placeholder="Search (e.g. Black Clover)..."
-              withSearchIcon={true}
-              error={errors.q}
-              onInputBlur={(val) => handleQueryParams("q", val)}
+              name="start_date"
+              label="From"
+              error={errors.start_date}
+              required={true}
+              onDateSelect={(date_str) =>
+                handleQueryParams("start_date", date_str)
+              }
             />
+            <DatePickerForm
+              control={control}
+              name="end_date"
+              label="To"
+              error={errors.end_date}
+              placeholder="Optional"
+              required={false}
+              onDateSelect={(date_str) =>
+                handleQueryParams("end_date", date_str)
+              }
+            />
+          </div>
+        </fieldset>
 
-            <div className="flex flex-col items-center justify-center lg:grid lg:grid-cols-2 gap-4">
-              <DatePickerForm
-                control={control}
-                name="start_date"
-                label="Start date"
-                error={errors.start_date}
-                required={true}
-                onDateSelect={(date_str) =>
-                  handleQueryParams("start_date", date_str)
-                }
-              />
+        {/* Grupo 3: Orden y Dirección */}
+        <fieldset className="space-y-3">
+          <legend className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+            Sort Settings
+          </legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <SelectForm
+              control={control}
+              name="order_by"
+              label="Order By"
+              options={ORDER_OPTIONS}
+              error={errors.order_by}
+              required={true}
+              onValueSelect={(val) => handleQueryParams("order_by", val)}
+            />
+            <SelectForm
+              control={control}
+              name="sort"
+              label="Direction"
+              options={SORT_OPTIONS}
+              error={errors.sort}
+              required={true}
+              onValueSelect={(val) => handleQueryParams("sort", val)}
+            />
+          </div>
+        </fieldset>
+      </form>
 
-              <DatePickerForm
-                control={control}
-                name="end_date"
-                label="End date"
-                error={errors.end_date}
-                required={false}
-                placeholder="Optional"
-                onDateSelect={(date_str) =>
-                  handleQueryParams("end_date", date_str)
-                }
-              />
-            </div>
-
-            <div className="flex flex-col items-center justify-center lg:grid lg:grid-cols-2 gap-4">
-              <SelectForm
-                control={control}
-                name="order_by"
-                label="Order by"
-                options={ORDER_OPTIONS}
-                error={errors.order_by}
-                required={true}
-                onValueSelect={(val) => handleQueryParams("order_by", val)}
-              />
-
-              <SelectForm
-                control={control}
-                name="sort"
-                label="Direction"
-                options={SORT_OPTIONS}
-                error={errors.sort}
-                required={true}
-                onValueSelect={(val) => handleQueryParams("sort", val)}
-              />
-            </div>
-          </FieldGroup>
-        </form>
-      </CardContent>
-
-      <CardFooter className="flex justify-between">
-        {children}
+      {/* Footer de Acciones */}
+      <footer className="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-4 border-t">
+        <div className="flex gap-2">
+          {children} {/* Aquí viene el DialogClose */}
+        </div>
         <Button
           type="button"
           variant="destructive"
           onClick={handleReset}
-          className="hover:scale-105 transition-transform"
+          className="font-bold uppercase tracking-tight hover:opacity-90 transition-all"
         >
           Reset Filters
         </Button>
-      </CardFooter>
-    </Card>
+      </footer>
+    </div>
   );
 };

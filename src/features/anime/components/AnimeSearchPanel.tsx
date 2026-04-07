@@ -6,35 +6,34 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerHeader,
-  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { AnimeSearchForm } from "./AnimeSearchForm";
 import { SlidersHorizontal } from "lucide-react";
+import { PanelHeader } from "./AnimeSearchPanelHeader";
 
 export function AnimeSearchPanel() {
   const [open, setOpen] = React.useState(false);
   const isMobile = useIsMobile();
 
-  // Botón Trigger común para ambos casos
   const TriggerButton = (
-    <Button variant="outline" className="gap-2">
-      <SlidersHorizontal className="h-4 w-4" />
-      <span className="hidden sm:inline">Filters</span>{" "}
-      {/* Texto solo en desktop */}
+    <Button
+      variant="outline"
+      className="gap-2"
+      aria-label="Open search filters" // A11y: Descripción clara del propósito
+    >
+      <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+      <span className="hidden sm:inline">Filters</span>
     </Button>
   );
 
@@ -42,20 +41,20 @@ export function AnimeSearchPanel() {
     return (
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>{TriggerButton}</DrawerTrigger>
-        <DrawerContent>
+        <DrawerContent
+          className="max-h-[90vh]"
+          onOpenAutoFocus={(e) => e.preventDefault()} // 👈 Esto evita que entre al primer elemento interactivo osea el primer input, el de anime title
+        >
           <DrawerHeader className="text-left">
-            <DrawerTitle>Search Filters</DrawerTitle>
-            <DrawerDescription>
-              Refine your search to find the anime you are looking for
-            </DrawerDescription>
+            <PanelHeader />
           </DrawerHeader>
-          <div
-            className="flex flex-col justify-center items-center px-4 no-scrollbar space-y-4
-          pt-40 overflow-y-auto"
-          >
+          {/* Eliminamos el div con pt-40 y usamos un scroll area más natural */}
+          <div className="px-4 pb-8 overflow-y-auto no-scrollbar">
             <AnimeSearchForm>
               <DrawerClose asChild>
-                <Button variant="outline">Close Panel</Button>
+                <Button variant="ghost" className="w-full">
+                  Cancel
+                </Button>
               </DrawerClose>
             </AnimeSearchForm>
           </div>
@@ -67,18 +66,21 @@ export function AnimeSearchPanel() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{TriggerButton}</DialogTrigger>
-      <DialogContent className="md:max-w-lg lg:max-w-xl">
-        <DialogHeader>
-          <DialogTitle>Search Filters</DialogTitle>
-          <DialogDescription>
-            Refine your search to find the anime you are looking for
-          </DialogDescription>
-        </DialogHeader>
-        <AnimeSearchForm>
-          <DialogClose asChild>
-            <Button variant="outline">Close Panel</Button>
-          </DialogClose>
-        </AnimeSearchForm>
+      <DialogContent
+        className="sm:max-w-md md:max-w-lg lg:max-w-xl p-0 overflow-hidden"
+        onOpenAutoFocus={(e) => e.preventDefault()} // 👈 Esto evita que entre al input
+      >
+        {/* Usamos p-0 y overflow-hidden para que el Card interno encaje perfecto */}
+        <div className="p-6">
+          <DialogHeader className="mb-4">
+            <PanelHeader />
+          </DialogHeader>
+          <AnimeSearchForm>
+            <DialogClose asChild>
+              <Button variant="ghost">Cancel</Button>
+            </DialogClose>
+          </AnimeSearchForm>
+        </div>
       </DialogContent>
     </Dialog>
   );
