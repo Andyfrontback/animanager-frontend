@@ -1,53 +1,100 @@
-// pages/AnimeListPage.tsx
+import { useEffect } from "react";
+import { useSearchParams } from "react-router";
+import { Helmet } from "react-helmet-async";
+
 import ErrorBoundary from "@/ErrorBoundary";
 import { AnimeList } from "@/features/anime/components/AnimeList";
 import { AnimeSearchPanel } from "@/features/anime/components/AnimeSearchPanel";
 import { DEFAULT_VALUES } from "@/features/anime/types/animeComp.types";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router";
 
 export const AnimeListPage = () => {
-  const [, setSearchParams] = useSearchParams();
-  // 4. Hook para sincronizar defaults al montar (sin borrar lo existente)
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // 1. Lógica de inicialización inteligente
   useEffect(() => {
-    setSearchParams(
-      (prevParams) => {
-        // Creamos una copia de los params actuales
-        const newParams = new URLSearchParams(prevParams);
-        let hasChanges = false;
+    // Si la URL ya tiene parámetros (ej. ?q=naruto), no tocamos nada.
+    if (searchParams.toString() !== "") return;
 
-        // Recorremos tus defaults
-        Object.entries(DEFAULT_VALUES).forEach(([key, value]) => {
-          // SOLO si la URL no tiene ese parámetro y el default tiene valor...
-          if (!newParams.has(key) && value) {
-            newParams.set(key, value);
-            hasChanges = true;
-          }
-        });
+    // Si está vacía, aplicamos los defaults.
+    // TIP: Aquí podrías preguntar primero a un store de Zustand persistente
+    // para recuperar la "última búsqueda" del usuario.
+    const params = new URLSearchParams();
+    Object.entries(DEFAULT_VALUES).forEach(([key, value]) => {
+      if (value) params.set(key, value.toString());
+    });
 
-        // Solo actualizamos si hubo cambios para evitar re-renders infinitos
-        return hasChanges ? newParams : prevParams;
-      },
-      { replace: true }, // 'replace: true' evita ensuciar el historial del navegador
-    );
-  }, [setSearchParams]); // Dependencia estable
+    setSearchParams(params, { replace: true });
+  }, [searchParams, setSearchParams]);
 
   return (
-    <section className="flex flex-col justify-center items-center gap-8 p-4">
-      <h1 className="text-2xl font-bold">
-        Browse Anime <AnimeSearchPanel />
-      </h1>
+    <>
+      <Helmet>
+        <title>Browse Anime</title>
+        <meta
+          name="description"
+          content="Busca y filtra entre miles de animes. Encuentra series por temporada, género o puntuación."
+        />
+        <meta
+          name="keywords"
+          content="anime, search, browse, seasonal anime, top rated"
+        />
+        {/* Open Graph para redes sociales */}
+        <meta property="og:title" content="Explorar el catálogo de Anime" />
+        <meta
+          property="og:description"
+          content="Descubre tu próximo anime favorito usando nuestros filtros avanzados."
+        />
+      </Helmet>
 
-      {/* El ErrorBoundary atrapa errores de red o de Zod */}
-      <ErrorBoundary
-        fallback={
-          <p className="text-red-500">
-            ⚠️ Algo salió mal al cargar los animes.
-          </p>
-        }
-      >
-        <AnimeList />
-      </ErrorBoundary>
-    </section>
+      {/* ESTRUCTURA SEMÁNTICA: <main> para el contenido principal */}
+      <main className="min-h-screen w-full py-6 px-4 md:px-8 space-y-8">
+        {/* Encabezado con jerarquía clara */}
+        <header className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h1 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter">
+              Browse <span className="text-primary">Anime</span>
+            </h1>
+            <p className="text-muted-foreground text-sm">
+              Explore the Jikan API database
+            </p>
+          </div>
+
+          {/* El panel de búsqueda como herramienta de navegación */}
+          <nav aria-label="Filtros de búsqueda" className="w-full md:w-auto">
+            <AnimeSearchPanel />
+          </nav>
+        </header>
+
+        {/* Separador visual sutil */}
+        <div className="h-px bg-border max-w-7xl mx-auto" aria-hidden="true" />
+
+        {/* Listado de resultados */}
+        <section
+          className="max-w-7xl mx-auto w-full"
+          aria-labelledby="results-heading"
+        >
+          <h2 id="results-heading" className="sr-only">
+            Search results
+          </h2>
+
+          <ErrorBoundary
+            fallback={
+              <div
+                role="alert"
+                className="p-4 rounded-lg bg-destructive/10 text-destructive border border-destructive/20 text-center"
+              >
+                <p className="font-bold">⚠️ Connection Error</p>
+                <p className="text-sm">
+                  We couldn't connect to the Jikan API. Please try refreshing
+                  the page.
+                </p>
+              </div>
+            }
+          >
+            <AnimeList />
+          </ErrorBoundary>
+        </section>
+      </main>
+    </>
   );
 };
