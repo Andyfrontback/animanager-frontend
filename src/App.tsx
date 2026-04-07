@@ -3,6 +3,7 @@ import AppRouter from "./AppRouter";
 import { ThemeProvider } from "./components/ui/theme-provider";
 import ErrorBoundary from "./ErrorBoundary";
 import { queryClient } from "./utils";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
   /* Aquí orquestamos llamados a providers de contextos globales definidos por nosotros */
@@ -10,7 +11,9 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <QueryClientProvider client={queryClient}>
-          <AppRouter />
+          <HelmetProvider>
+            <AppRouter />
+          </HelmetProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </ErrorBoundary>
