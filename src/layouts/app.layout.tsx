@@ -5,10 +5,10 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Outlet, Link } from "react-router"; // Importamos Link para el logo
+import { Outlet, Link } from "react-router";
 import { BreadcrumbLayout } from "./components/BreadcrumbLayout";
 import { Button } from "@/components/ui/button";
-import { ScanEye } from "lucide-react"; // Añadimos icono de GitHub
+import { ScanEye } from "lucide-react";
 import { AnimeWatched } from "@/features/anime/components/AnimeWatched";
 import { Toaster } from "sonner";
 import GithubIcon from "@/components/ui/GitHub";
@@ -16,19 +16,30 @@ import GithubIcon from "@/components/ui/GitHub";
 export default function Layout() {
   return (
     <SidebarProvider>
+      {/* 1. Skip Link: Mejora la accesibilidad y el SEO técnico */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 bg-primary text-primary-foreground px-4 py-2 rounded-md font-bold"
+      >
+        Skip to main content
+      </a>
+
       <Toaster className="pointer-events-auto" />
       <AppSidebar />
 
       <SidebarInset className="w-full min-w-0 flex flex-col">
-        {/* HEADER: Región de navegación superior */}
         <header
           className="bg-background/80 sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b px-4 z-40 backdrop-blur-sm justify-between rounded-t-lg"
           role="banner"
         >
           <div className="flex items-center gap-4">
-            <SidebarTrigger className="-ml-1" aria-label="Toggle Sidebar" />
+            <SidebarTrigger className="-ml-1" aria-label="Open sidebar menu" />
             <div className="h-4 w-px bg-border md:hidden" aria-hidden="true" />
-            <BreadcrumbLayout />
+
+            {/* Nav interno para breadcrumbs si no lo tiene ya */}
+            <nav aria-label="Breadcrumb">
+              <BreadcrumbLayout />
+            </nav>
           </div>
 
           <div className="flex items-center gap-2">
@@ -45,39 +56,39 @@ export default function Layout() {
           </div>
         </header>
 
-        <Outlet />
+        {/* 2. MAIN: Crucial para SEO On-Page */}
+        <main id="main-content" className="flex-1 flex flex-col outline-none">
+          <Outlet />
+        </main>
 
-        {/* FOOTER: Información de autoría y links externos */}
         <footer
           className="mt-auto border-t border-border/40 bg-card/10 py-12 w-full"
           role="contentinfo"
         >
           <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
-            {/* Branding & Copyright */}
             <div className="flex flex-col items-center md:items-start gap-2">
               <Link
                 to="/"
-                className="text-2xl font-black italic uppercase tracking-tighter hover:text-primary transition-colors"
-                aria-label="AniManager Home"
+                className="text-2xl font-black italic uppercase tracking-tighter hover:text-primary transition-colors focus:ring-2 focus:ring-primary outline-none rounded"
+                aria-label="AniManager - Home"
               >
                 Ani<span className="text-primary">Manager</span>
               </Link>
-              <p className="text-muted-foreground text-xs font-medium tracking-wide">
+              <p className="text-muted-foreground text-[10px] font-medium tracking-widest">
                 © {new Date().getFullYear()}
               </p>
             </div>
 
-            {/* Navigation & Social */}
             <nav
               className="flex flex-col sm:flex-row items-center gap-6 md:gap-10"
-              aria-label="Footer Navigation"
+              aria-label="Footer navigation"
             >
               <div className="flex items-center gap-2 text-muted-foreground">
                 <span className="text-[10px] uppercase font-bold tracking-[0.2em]">
                   Developer
                 </span>
-                <span className="text-sm font-black text-foreground">
-                  ANDRÉS
+                <span className="text-sm font-black text-foreground uppercase tracking-wider">
+                  Andrés
                 </span>
               </div>
 

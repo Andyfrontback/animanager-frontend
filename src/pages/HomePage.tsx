@@ -13,18 +13,18 @@ import kohakuImg from "@/assets/imgs/Kohaku.jpg";
 import alyaImg from "@/assets/imgs/alya.webp";
 
 export const HomePage = () => {
-  // Nota: Cuando despliegues, cambia esta URL por la real de Vercel
+  // Update this URL to the production Vercel domain when deploying
   const siteUrl = "https://animanager.vercel.app";
 
   return (
     <>
       <Helmet>
-        {/* Atributos básicos y SEO de contenido */}
-        <html lang="es" />
-        <title>AniManager | Gestiona tu camino en el Anime</title>
+        {/* Basic attributes and content SEO */}
+        <html lang="en" />
+        <title>AniManager | Manage Your Anime Journey</title>
         <meta
           name="description"
-          content="La plataforma definitiva para trackear tu progreso anime, analizar estadísticas avanzadas y crear tier lists personalizadas."
+          content="The ultimate platform to track your anime progress, analyze advanced statistics, and create personalized tier lists."
         />
         <link rel="canonical" href={siteUrl} />
 
@@ -33,11 +33,11 @@ export const HomePage = () => {
         <meta property="og:url" content={siteUrl} />
         <meta
           property="og:title"
-          content="AniManager - Analytics y Tierlists de Anime"
+          content="AniManager - Anime Analytics & Tier Lists"
         />
         <meta
           property="og:description"
-          content="Trackea tu progreso, analiza estadísticas con Web Workers y organiza tus favoritos."
+          content="Track your progress, analyze statistics with Web Workers, and organize your favorites."
         />
         <meta property="og:image" content={`${siteUrl}${alyaImg}`} />
         <meta property="og:site_name" content="AniManager" />
@@ -47,38 +47,38 @@ export const HomePage = () => {
         <meta name="twitter:title" content="AniManager | Anime Journey Pro" />
         <meta
           name="twitter:description"
-          content="Lleva tu lista de anime al siguiente nivel con estadísticas detalladas."
+          content="Take your anime list to the next level with detailed statistics."
         />
         <meta name="twitter:image" content={`${siteUrl}${alyaImg}`} />
       </Helmet>
 
-      <main className="min-h-screen flex flex-col bg-background selection:bg-primary/30">
+      <div className="min-h-screen flex flex-col bg-background selection:bg-primary/30">
         <header>
           <Hero>
             <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase italic">
-              Gestiona tu camino <span className="text-primary">Anime</span>{" "}
+              Manage Your <span className="text-primary">Anime</span> Journey{" "}
               <br />
-              como un{" "}
+              Like a{" "}
               <span className="[-webkit-text-stroke:2px_var(--color-primary)] text-transparent">
-                pro
+                Pro
               </span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed font-medium">
-              Analiza tus estadísticas, crea tier lists personalizadas y mantén
-              todo tu historial en un solo lugar.
+              Analyze your statistics, create custom tier lists, and keep your
+              entire history in one place.
             </p>
 
             <nav
               className="flex flex-wrap gap-4 pt-6"
-              aria-label="Acciones principales"
+              aria-label="Primary actions"
             >
               <a href="#features-grid">
                 <Button
                   size="lg"
                   className="font-bold px-8 shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
                 >
-                  Empezar ahora
+                  Get Started
                 </Button>
               </a>
               <Link to="/private/anime/list">
@@ -87,27 +87,27 @@ export const HomePage = () => {
                   variant="outline"
                   className="border-primary/20 hover:bg-primary/5 font-bold"
                 >
-                  Explorar Anime
+                  Browse Anime
                 </Button>
               </Link>
             </nav>
           </Hero>
         </header>
 
-        {/* Sección de características con ID para el salto del Hero */}
+        {/* Features section with ID anchor for Hero jump */}
         <section id="features-grid" aria-labelledby="features-title">
-          {/* Título oculto para buscadores, mantiene la jerarquía semántica */}
+          {/* Hidden heading for search engines, maintains semantic hierarchy */}
           <h2 id="features-title" className="sr-only">
-            Características principales
+            Key Features
           </h2>
 
           <BentoGrid>
             <article className="md:col-span-2 md:row-span-1">
               <TiltCard
-                title="Lista de Seguimiento Avanzada"
-                description="Filtros potentes sincronizados con la URL para búsquedas fluidas."
+                title="Advanced Watchlist"
+                description="Powerful filters synced with URL for seamless searching."
                 image={kaguyaImg}
-                altText="Interfaz de lista de anime con Kaguya Shinomiya"
+                altText="Anime list interface featuring Kaguya Shinomiya"
                 layoutType="horizontal"
                 cardHref="/private/anime/list"
               />
@@ -115,10 +115,10 @@ export const HomePage = () => {
 
             <article className="md:col-span-1 md:row-span-2">
               <TiltCard
-                title="Analíticas"
-                description="Visualiza tu tiempo de visualización y géneros favoritos."
+                title="Analytics"
+                description="Visualize your watch time and favorite genres."
                 image={kohakuImg}
-                altText="Gráficos de estadísticas con Kohaku de Dr. Stone"
+                altText="Statistics charts with Dr. Stone's Kohaku"
                 layoutType="vertical"
                 cardHref="/private/dashboard"
               />
@@ -127,9 +127,9 @@ export const HomePage = () => {
             <article className="md:col-span-1 md:row-span-2">
               <TiltCard
                 title="Tier Lists"
-                description="Arrastra y suelta para clasificar tus animes preferidos."
+                description="Drag and drop to rank your favorite anime."
                 image={alyaImg}
-                altText="Creador de tier lists con Alya"
+                altText="Tier list creator with Alya"
                 layoutType="vertical"
                 cardHref="/private/anime/tierlist"
               />
@@ -138,7 +138,7 @@ export const HomePage = () => {
             <article className="md:col-span-1 md:row-span-1">
               <TiltCard
                 image={rezeImg}
-                altText="Decoración de interfaz con Reze de Chainsaw Man"
+                altText="Interface decoration featuring Reze from Chainsaw Man"
                 layoutType="mini"
                 className="border-primary/40 shadow-[0_0_50px_rgba(var(--color-primary),0.15)]"
               />
@@ -146,16 +146,16 @@ export const HomePage = () => {
 
             <article className="md:col-span-2 md:row-span-1">
               <TiltCard
-                title="Descubrimiento"
-                description="Próximamente: Motor de recomendaciones inteligente."
+                title="Discovery"
+                description="Coming soon: Smart recommendation engine."
                 image={maomaoImg}
-                altText="Recomendaciones inteligentes con Maomao de Apothecary Diaries"
+                altText="Smart recommendations with Maomao from Apothecary Diaries"
                 layoutType="horizontal"
               />
             </article>
           </BentoGrid>
         </section>
-      </main>
+      </div>
     </>
   );
 };

@@ -8,7 +8,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { ModeToggle } from "./ui/mode-toggle";
 
 export function NavSecondary({
   items,
@@ -34,7 +33,6 @@ export function NavSecondary({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-          <ModeToggle />
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
