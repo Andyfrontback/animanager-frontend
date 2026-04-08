@@ -29,7 +29,7 @@ export default function Layout() {
 
       <SidebarInset className="w-full min-w-0 flex flex-col">
         <header
-          className="bg-background/80 sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b px-4 z-40 backdrop-blur-sm justify-between rounded-t-lg"
+          className="bg-background/80 sticky top-0 flex h-16 shrink-0 items-center gap-4 border-b px-4 z-50 backdrop-blur-sm justify-between rounded-t-lg"
           role="banner"
         >
           <div className="flex items-center gap-4">

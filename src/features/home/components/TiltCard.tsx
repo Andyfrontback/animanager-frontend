@@ -58,7 +58,7 @@ export const TiltCard = ({
     <Link
       to={cardHref || "#"}
       className={cn(
-        "relative w-full h-full perspective-[1000px] block group/card hover:z-50 transition-all duration-300",
+        "relative w-full h-full perspective-[1000px] block group/card hover:z-40 transition-all duration-300",
         className,
       )}
     >
