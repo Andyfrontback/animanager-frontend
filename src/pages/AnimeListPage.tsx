@@ -8,6 +8,12 @@ import { AnimeSearchPanel } from "@/features/anime/components/AnimeSearchPanel";
 import { DEFAULT_VALUES } from "@/features/anime/types/animeComp.types";
 import { useBrowserStore } from "@/stores/browser.store";
 
+import { siteBaseUrl } from "./constants";
+import alyaImg from "@/assets/imgs/alya.webp";
+
+const pageUrl = `${siteBaseUrl}/private/anime/list`;
+const ogImage = new URL(alyaImg, siteBaseUrl).href;
+
 export const AnimeListPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { lastSearchParams, setLastSearchParams } = useBrowserStore();
@@ -47,25 +53,53 @@ export const AnimeListPage = () => {
   return (
     <>
       <Helmet>
-        <title>Browse Anime</title>
+        {/* Core Meta - Todo unificado al Inglés */}
+        <title>Browse Anime | AniManager</title>
         <meta
           name="description"
-          content="Busca y filtra entre miles de animes. Encuentra series por temporada, género o puntuación."
+          content="Search and filter through thousands of anime series. Find your next favorite show by season, genre, or community score."
         />
+        {/* El Canonical apunta a la base sin Query Params para evitar que Google 
+          indexe URLs duplicadas como /browse?genre=action y /browse?genre=comedy 
+          como páginas totalmente distintas si no quieres que compitan entre sí.
+        */}
+        <link rel="canonical" href={pageUrl} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={pageUrl} />
         <meta
-          name="keywords"
-          content="anime, search, browse, seasonal anime, top rated"
+          property="og:title"
+          content="Browse Anime Database | AniManager"
         />
-        {/* Open Graph para redes sociales */}
-        <meta property="og:title" content="Explorar el catálogo de Anime" />
         <meta
           property="og:description"
-          content="Descubre tu próximo anime favorito usando nuestros filtros avanzados."
+          content="Search and filter through thousands of anime series. Find your next favorite show by season, genre, or community score."
         />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+          property="og:image:alt"
+          content="AniManager Anime Database Search Interface"
+        />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={pageUrl} />
+        <meta
+          name="twitter:title"
+          content="Browse Anime Database | AniManager"
+        />
+        <meta
+          name="twitter:description"
+          content="Search and filter through thousands of anime series. Find your next favorite show by season, genre, or community score."
+        />
+        <meta name="twitter:image" content={ogImage} />
       </Helmet>
 
-      {/* ESTRUCTURA SEMÁNTICA: <main> para el contenido principal */}
-      <main className="min-h-screen w-full py-6 px-4 md:px-8 space-y-8">
+      {/* Contenido principal, no se necesita main ya que esta indicado por el Layout */}
+      <div className="min-h-screen w-full py-6 px-4 md:px-8 space-y-8">
         {/* Encabezado con jerarquía clara */}
         <header className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
@@ -78,13 +112,16 @@ export const AnimeListPage = () => {
           </div>
 
           {/* El panel de búsqueda como herramienta de navegación */}
-          <nav aria-label="Filtros de búsqueda" className="w-full md:w-auto">
+          <search
+            aria-label="Anime search and filters"
+            className="w-full md:w-auto"
+          >
             <AnimeSearchPanel />
-          </nav>
+          </search>
         </header>
 
         {/* Separador visual sutil */}
-        <div className="h-px bg-border max-w-7xl mx-auto" aria-hidden="true" />
+        <hr className="border-border max-w-7xl mx-auto" aria-hidden="true" />
 
         {/* Listado de resultados */}
         <section
@@ -112,7 +149,7 @@ export const AnimeListPage = () => {
             <AnimeList />
           </ErrorBoundary>
         </section>
-      </main>
+      </div>
     </>
   );
 };

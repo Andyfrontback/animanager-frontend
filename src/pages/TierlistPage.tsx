@@ -1,11 +1,10 @@
 import { TierListContainer } from "@/features/tierlist/components/TierListContainer";
-// Asumiendo que usas react-helmet-async para SEO, si no, te doy la alternativa abajo
 import { Helmet } from "react-helmet-async";
 import { siteBaseUrl } from "./constants";
 import alyaImg from "@/assets/imgs/alya.webp";
 
 const pageUrl = `${siteBaseUrl}/private/anime/tierlist`;
-const ogImage = alyaImg;
+const ogImage = new URL(alyaImg, siteBaseUrl).href;
 
 export const TierlistPage = () => {
   return (
@@ -52,7 +51,7 @@ export const TierlistPage = () => {
         <meta name="twitter:image" content={ogImage} />
       </Helmet>
 
-      {/* 1. Usamos <main> para indicar el contenido único de esta ruta */}
+      {/* 1. No usamos main, ya que el layout lo puso por nosotros */}
       <div className="min-h-screen bg-background py-8 px-4">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* 2. Encabezado Semántico */}
@@ -65,6 +64,9 @@ export const TierlistPage = () => {
               automatically saved to your local workspace.
             </p>
           </header>
+
+          {/* Separador visual sutil */}
+          <hr className="border-border max-w-7xl mx-auto" aria-hidden="true" />
 
           {/* 3. El contenedor dentro de una sección con etiqueta aria */}
           <section aria-labelledby="tierlist-section-title" className="w-full">
