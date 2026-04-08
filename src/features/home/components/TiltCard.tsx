@@ -72,7 +72,7 @@ export const TiltCard = ({
           transformStyle: "preserve-3d",
         }}
         className={cn(
-          "relative w-full h-full rounded-2xl overflow-hidden group cursor-pointer border-2 border-border/50 hover:border-primary/50 transition-colors shadow-2xl",
+          "relative w-full h-full rounded-2xl overflow-hidden group cursor-pointer border-2 border-border/50 hover:border-primary/50 transition-colors shadow-2xl min-h-70",
           layoutType === "horizontal" ? "flex flex-row" : "flex flex-col",
           layoutType === "mini" && "justify-center items-center text-center",
         )}
