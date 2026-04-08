@@ -35,11 +35,11 @@ const data = {
       items: [
         {
           title: "List",
-          url: "/private/anime/list",
+          url: "/feature/anime/list",
         },
         {
           title: "Tierlist",
-          url: "/private/anime/tierlist",
+          url: "/feature/anime/tierlist",
         },
       ],
     },
@@ -64,7 +64,7 @@ const data = {
     },
     {
       name: "Dashboard",
-      url: "/private/dashboard",
+      url: "/feature/dashboard",
       icon: PieChart,
     },
   ],

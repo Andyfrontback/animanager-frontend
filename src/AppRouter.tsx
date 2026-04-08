@@ -18,7 +18,7 @@ const AppRouter = () => {
 
           {/* Rutas Privadas (La verdad no va a ser nunca privado pero pa practicar está bien) */}
           <Route element={<PrivateGuard />}>
-            <Route path="private/*" element={<PrivateRouter />} />
+            <Route path="feature/*" element={<PrivateRouter />} />
           </Route>
 
           {/* Redirección inicial (En producción cambiar a public mientras poner la dir a testear en desarrollo)*/}

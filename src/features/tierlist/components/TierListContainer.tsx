@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import React, { useEffect, useMemo, useState, type ReactNode } from "react";
 import { DragDropProvider } from "@dnd-kit/react";
 import { move } from "@dnd-kit/helpers";
 
@@ -163,7 +158,7 @@ export const TierListContainer = () => {
                       watched. Start adding anime to your watched list
                     </p>
 
-                    <Link to="/private/anime/list">
+                    <Link to="/feature/anime/list">
                       <button className="bg-primary text-primary-foreground px-6 py-2 rounded-md font-semibold">
                         Start Adding Anime
                       </button>

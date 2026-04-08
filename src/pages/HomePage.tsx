@@ -79,7 +79,7 @@ export const HomePage = () => {
                   Get Started
                 </Button>
               </a>
-              <Link to="/private/anime/list">
+              <Link to="/feature/anime/list">
                 <Button
                   size="lg"
                   variant="outline"
@@ -107,7 +107,7 @@ export const HomePage = () => {
                 image={kaguyaImg}
                 altText="Dark close-up of Kaguya Shinomiya from 'Kaguya-sama: Love Is War' looking down with a serious, calculating expression."
                 layoutType="horizontal"
-                cardHref="/private/anime/list"
+                cardHref="/feature/anime/list"
               />
             </article>
 
@@ -118,7 +118,7 @@ export const HomePage = () => {
                 image={kohakuImg}
                 altText="Full-body shot of Kohaku from 'Dr. Stone' running outdoors while carrying a large wooden shield on her back."
                 layoutType="vertical"
-                cardHref="/private/dashboard"
+                cardHref="/feature/dashboard"
               />
             </article>
 
@@ -129,7 +129,7 @@ export const HomePage = () => {
                 image={alyaImg}
                 altText="Close-up of Alya from 'Alya Sometimes Hides Her Feelings in Russian' in her school uniform, looking thoughtfully at the camera."
                 layoutType="vertical"
-                cardHref="/private/anime/tierlist"
+                cardHref="/feature/anime/tierlist"
               />
             </article>
 

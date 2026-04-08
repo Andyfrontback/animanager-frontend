@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { siteBaseUrl } from "./constants";
 import alyaImg from "@/assets/imgs/alya.webp";
 
-const pageUrl = `${siteBaseUrl}/private/anime/tierlist`;
+const pageUrl = `${siteBaseUrl}/feature/anime/tierlist`;
 const ogImage = new URL(alyaImg, siteBaseUrl).href;
 
 export const TierlistPage = () => {

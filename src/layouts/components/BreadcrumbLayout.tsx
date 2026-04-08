@@ -9,7 +9,7 @@ import {
 import { Link, useLocation } from "react-router";
 import { Fragment } from "react/jsx-runtime";
 
-const protectedRoutes = ["private", "public", "home"];
+const protectedRoutes = ["feature", "public", "home"];
 
 export const BreadcrumbLayout = () => {
   const location = useLocation();

@@ -11,7 +11,7 @@ import { useBrowserStore } from "@/stores/browser.store";
 import { siteBaseUrl } from "./constants";
 import alyaImg from "@/assets/imgs/alya.webp";
 
-const pageUrl = `${siteBaseUrl}/private/anime/list`;
+const pageUrl = `${siteBaseUrl}/feature/anime/list`;
 const ogImage = new URL(alyaImg, siteBaseUrl).href;
 
 export const AnimeListPage = () => {
