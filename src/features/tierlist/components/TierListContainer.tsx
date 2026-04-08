@@ -1,4 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { DragDropProvider } from "@dnd-kit/react";
 import { move } from "@dnd-kit/helpers";
 
@@ -16,6 +21,7 @@ import { TierRow } from "./TierRow";
 import { AnimeBench } from "./AnimeBench";
 import { AnimeDraggableCard } from "./AnimeDraggableCard";
 import { TierListDragOverlay } from "./TierListDragOverlay";
+import { Link } from "react-router";
 
 // 6. Configuración de Filas
 const tiers: { id: TierId; name: string; color: string }[] = [
@@ -111,10 +117,10 @@ export const TierListContainer = () => {
     });
   };
 
-  const renderBenchMessage = (text: string) => {
+  const renderBenchMessage = (text: ReactNode) => {
     return (
       <div className="w-full py-10 flex flex-col items-center justify-center text-neutral-500 italic">
-        <p>{text}</p>
+        {text}
       </div>
     );
   };
@@ -151,10 +157,21 @@ export const TierListContainer = () => {
           <AnimeBench benchId="bench">
             {watchedList.length === 0
               ? renderBenchMessage(
-                  "✨ Start by adding anime to your watched list ✨",
+                  <>
+                    <p className="text-muted-foreground mb-6 max-w-md">
+                      To build your custom tierlist, we need to know what you've
+                      watched. Start adding anime to your watched list
+                    </p>
+
+                    <Link to="/private/anime/list">
+                      <button className="bg-primary text-primary-foreground px-6 py-2 rounded-md font-semibold">
+                        Start Adding Anime
+                      </button>
+                    </Link>
+                  </>,
                 )
               : localDistribution.bench.length === 0
-                ? renderBenchMessage("✨ All anime have been ranked ✨")
+                ? renderBenchMessage(<p>✨ All anime have been ranked ✨</p>)
                 : renderAnimeCards(localDistribution.bench, "bench")}
           </AnimeBench>
         </div>
