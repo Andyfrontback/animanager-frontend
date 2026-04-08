@@ -1,22 +1,59 @@
 import { TierListContainer } from "@/features/tierlist/components/TierListContainer";
 // Asumiendo que usas react-helmet-async para SEO, si no, te doy la alternativa abajo
 import { Helmet } from "react-helmet-async";
+import { siteBaseUrl } from "./constants";
+import alyaImg from "@/assets/imgs/alya.webp";
+
+const pageUrl = `${siteBaseUrl}/private/anime/tierlist`;
+const ogImage = alyaImg;
 
 export const TierlistPage = () => {
   return (
     <>
       <Helmet>
-        <title>Anime Tierlist Maker</title>
+        {/* Core Meta */}
+        <title>Anime Tier List Maker | AniManager</title>
         <meta
           name="description"
-          content="Organiza y clasifica tus animes favoritos en categorías desde S hasta D. Personaliza tu propia tierlist de forma interactiva."
+          content="Organize and rank your favorite anime series from S to D tier. Drag and drop to create your custom, interactive anime tier list."
         />
-        <meta property="og:title" content="My Anime Tierlist Maker" />
+        <link rel="canonical" href={pageUrl} />
+
+        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={pageUrl} />
+        <meta
+          property="og:title"
+          content="Anime Tier List Maker | AniManager"
+        />
+        <meta
+          property="og:description"
+          content="Organize and rank your favorite anime series from S to D tier. Drag and drop to create your custom, interactive anime tier list."
+        />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+          property="og:image:alt"
+          content="Preview of the AniManager Tierlist Maker interface"
+        />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={pageUrl} />
+        <meta
+          name="twitter:title"
+          content="Anime Tier List Maker | AniManager"
+        />
+        <meta
+          name="twitter:description"
+          content="Organize and rank your favorite anime series from S to D tier. Drag and drop to create your custom, interactive anime tier list."
+        />
+        <meta name="twitter:image" content={ogImage} />
       </Helmet>
 
       {/* 1. Usamos <main> para indicar el contenido único de esta ruta */}
-      <main className="min-h-screen bg-background py-8 px-4" role="main">
+      <div className="min-h-screen bg-background py-8 px-4">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* 2. Encabezado Semántico */}
           <header className="space-y-2 text-center md:text-left">
@@ -24,17 +61,20 @@ export const TierlistPage = () => {
               Anime <span className="text-primary">Tierlist</span> Maker
             </h1>
             <p className="text-muted-foreground text-sm md:text-base max-w-2xl">
-              Arrastra y suelta tus animes para clasificarlos. Tus cambios se
-              guardan automáticamente en tu navegador.
+              Drag and drop your anime to rank them. Your changes are
+              automatically saved to your local workspace.
             </p>
           </header>
 
           {/* 3. El contenedor dentro de una sección con etiqueta aria */}
-          <section aria-label="Tierlist Editor" className="w-full">
+          <section aria-labelledby="tierlist-section-title" className="w-full">
+            <h2 id="tierlist-section-title" className="sr-only">
+              Interactive Tier List Editor
+            </h2>
             <TierListContainer />
           </section>
         </div>
-      </main>
+      </div>
     </>
   );
 };

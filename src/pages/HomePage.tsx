@@ -11,11 +11,9 @@ import rezeImg from "@/assets/imgs/reze.jpg";
 import kaguyaImg from "@/assets/imgs/kaguya.jpg";
 import kohakuImg from "@/assets/imgs/Kohaku.jpg";
 import alyaImg from "@/assets/imgs/alya.webp";
+import { siteBaseUrl } from "./constants";
 
 export const HomePage = () => {
-  // Update this URL to the production Vercel domain when deploying
-  const siteUrl = "https://animanager.vercel.app";
-
   return (
     <>
       <Helmet>
@@ -26,11 +24,11 @@ export const HomePage = () => {
           name="description"
           content="The ultimate platform to track your anime progress, analyze advanced statistics, and create personalized tier lists."
         />
-        <link rel="canonical" href={siteUrl} />
+        <link rel="canonical" href={siteBaseUrl} />
 
         {/* Open Graph (Facebook, WhatsApp, Discord) */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={siteUrl} />
+        <meta property="og:url" content={siteBaseUrl} />
         <meta
           property="og:title"
           content="AniManager - Anime Analytics & Tier Lists"
@@ -39,7 +37,7 @@ export const HomePage = () => {
           property="og:description"
           content="Track your progress, analyze statistics with Web Workers, and organize your favorites."
         />
-        <meta property="og:image" content={`${siteUrl}${alyaImg}`} />
+        <meta property="og:image" content={`${siteBaseUrl}${alyaImg}`} />
         <meta property="og:site_name" content="AniManager" />
 
         {/* Twitter Cards */}
@@ -49,7 +47,7 @@ export const HomePage = () => {
           name="twitter:description"
           content="Take your anime list to the next level with detailed statistics."
         />
-        <meta name="twitter:image" content={`${siteUrl}${alyaImg}`} />
+        <meta name="twitter:image" content={`${siteBaseUrl}${alyaImg}`} />
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-background selection:bg-primary/30">
@@ -107,7 +105,7 @@ export const HomePage = () => {
                 title="Advanced Watchlist"
                 description="Powerful filters synced with URL for seamless searching."
                 image={kaguyaImg}
-                altText="Anime list interface featuring Kaguya Shinomiya"
+                altText="Dark close-up of Kaguya Shinomiya from 'Kaguya-sama: Love Is War' looking down with a serious, calculating expression."
                 layoutType="horizontal"
                 cardHref="/private/anime/list"
               />
@@ -118,7 +116,7 @@ export const HomePage = () => {
                 title="Analytics"
                 description="Visualize your watch time and favorite genres."
                 image={kohakuImg}
-                altText="Statistics charts with Dr. Stone's Kohaku"
+                altText="Full-body shot of Kohaku from 'Dr. Stone' running outdoors while carrying a large wooden shield on her back."
                 layoutType="vertical"
                 cardHref="/private/dashboard"
               />
@@ -129,7 +127,7 @@ export const HomePage = () => {
                 title="Tier Lists"
                 description="Drag and drop to rank your favorite anime."
                 image={alyaImg}
-                altText="Tier list creator with Alya"
+                altText="Close-up of Alya from 'Alya Sometimes Hides Her Feelings in Russian' in her school uniform, looking thoughtfully at the camera."
                 layoutType="vertical"
                 cardHref="/private/anime/tierlist"
               />
@@ -138,7 +136,7 @@ export const HomePage = () => {
             <article className="md:col-span-1 md:row-span-1">
               <TiltCard
                 image={rezeImg}
-                altText="Interface decoration featuring Reze from Chainsaw Man"
+                altText="Dimly lit medium shot of Reze from 'Chainsaw Man' smiling softly in an indoor setting."
                 layoutType="mini"
                 className="border-primary/40 shadow-[0_0_50px_rgba(var(--color-primary),0.15)]"
               />
@@ -149,7 +147,7 @@ export const HomePage = () => {
                 title="Discovery"
                 description="Coming soon: Smart recommendation engine."
                 image={maomaoImg}
-                altText="Smart recommendations with Maomao from Apothecary Diaries"
+                altText="Extreme close-up of Maomao's eyes and face from 'The Apothecary Diaries' with a focused look."
                 layoutType="horizontal"
               />
             </article>
