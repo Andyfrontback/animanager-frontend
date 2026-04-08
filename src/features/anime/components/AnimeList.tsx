@@ -58,8 +58,8 @@ export const AnimeList = () => {
 
   if (isPending) {
     return (
-      <section className="flex flex-col justify-center items-center gap-8">
-        <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4 w-full">
+      <section className="flex flex-col justify-center items-center gap-8 ">
+        <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {/* Renderizamos 12 skeletons (límite escogido de paginación) */}
           {Array.from({ length: 12 }).map((_, index) => (
             <AnimeCardSkeleton key={index} />
