@@ -36,16 +36,16 @@ export function DashboardPage() {
   return (
     <>
       <Helmet>
-        <title>Dashboard</title>
+        <title>User Dashboard | AniManager</title>
         <meta
           name="description"
-          content="Visualiza estadísticas detalladas, tiempo de visualización y análisis de tu lista de anime."
+          content="View detailed statistics, watch time, and analytics of your personal anime list."
         />
         <meta name="robots" content="noindex, nofollow" />{" "}
         {/* Dashboard suele ser privado/personal */}
       </Helmet>
 
-      <main className="flex-1 space-y-6 p-4 md:p-8 pt-6" id="dashboard-main">
+      <div className="flex-1 space-y-6 p-4 md:p-8 pt-6" id="dashboard-main">
         {/* ENCABEZADO DE PÁGINA */}
         <header className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div>
@@ -59,6 +59,9 @@ export function DashboardPage() {
           {/* Aquí podrías poner un botón de "Exportar Reporte" en el futuro */}
         </header>
 
+        {/* Separador visual sutil */}
+        <hr className="border-border max-w-7xl mx-auto" aria-hidden="true" />
+
         <div className="space-y-8">
           {error ? (
             <div
@@ -71,7 +74,7 @@ export function DashboardPage() {
           ) : isLoading || !stats ? (
             <section
               aria-busy="true"
-              aria-label="Cargando estadísticas"
+              aria-label="Loading statistics"
               className="space-y-6"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -139,7 +142,7 @@ export function DashboardPage() {
             </div>
           </section>
         </div>
-      </main>
+      </div>
     </>
   );
 }
