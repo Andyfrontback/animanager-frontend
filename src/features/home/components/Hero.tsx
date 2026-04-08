@@ -64,10 +64,11 @@ export const Hero = ({ children }: HeroInput) => {
                         className="aspect-2/3 relative group"
                       >
                         <img
-                          src={anime.images.jpg.large_image_url}
-                          alt={anime.title}
+                          src={anime.images.webp.large_image_url}
+                          alt={`Poster de ${anime.title}`}
                           className="w-full h-full object-cover rounded-md border border-border/50 shadow-2xl"
-                          loading="lazy"
+                          // Si es una de las primeras columnas, le damos prioridad
+                          fetchPriority={colIndex < 3 ? "high" : "auto"}
                         />
                       </motion.div>
                     ))}

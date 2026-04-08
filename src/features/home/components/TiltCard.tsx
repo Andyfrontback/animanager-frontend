@@ -8,6 +8,7 @@ interface TiltCardProps {
   title?: string;
   description?: string;
   image: string;
+  altText: string;
   cardHref?: string;
   layoutType?: "vertical" | "horizontal" | "mini";
   className?: string;
@@ -18,6 +19,7 @@ export const TiltCard = ({
   title,
   description,
   image,
+  altText,
   cardHref,
   layoutType = "vertical",
   className,
@@ -29,8 +31,8 @@ export const TiltCard = ({
   const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
   const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -55,7 +57,10 @@ export const TiltCard = ({
     /* 1. EL CONTENEDOR DE PERSPECTIVA (Crucial para que no se deforme) */
     <Link
       to={cardHref || "#"}
-      className={cn("relative w-full h-full perspective-[1000px]", className)}
+      className={cn(
+        "relative w-full h-full perspective-[1000px] block group/card hover:z-50 transition-all duration-300",
+        className,
+      )}
     >
       <motion.div
         // Sroll Animation
@@ -82,8 +87,10 @@ export const TiltCard = ({
           className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110 opacity-70"
           style={{
             backgroundImage: `url(${image})`,
-            transform: "translateZ(-30px)",
+            transform: "translateZ(-20px)",
           }}
+          role="img"
+          aria-label={altText}
         />
 
         {/* 3. CAPA OVERLAYS (Nivel 0) */}
@@ -120,7 +127,7 @@ export const TiltCard = ({
               : "justify-end",
             layoutType === "mini" && "p-4",
           )}
-          style={{ transform: "translateZ(60px)" }}
+          style={{ transform: "translateZ(50px)" }}
         >
           {title && (
             <h3 className="text-2xl md:text-3xl font-extrabold mb-2 tracking-tight drop-shadow-xl">

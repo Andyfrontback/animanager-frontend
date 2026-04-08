@@ -13,44 +13,72 @@ import kohakuImg from "@/assets/imgs/Kohaku.jpg";
 import alyaImg from "@/assets/imgs/alya.webp";
 
 export const HomePage = () => {
+  // Nota: Cuando despliegues, cambia esta URL por la real de Vercel
+  const siteUrl = "https://animanager.vercel.app";
+
   return (
     <>
       <Helmet>
-        <title>AniManager | Track your Anime Journey</title>
+        {/* Atributos básicos y SEO de contenido */}
+        <html lang="es" />
+        <title>AniManager | Gestiona tu camino en el Anime</title>
         <meta
           name="description"
-          content="La plataforma definitiva para trackear tu progreso anime, analizar estadísticas avanzadas con Web Workers y crear tier lists con dnd-kit."
+          content="La plataforma definitiva para trackear tu progreso anime, analizar estadísticas avanzadas y crear tier lists personalizadas."
         />
+        <link rel="canonical" href={siteUrl} />
+
+        {/* Open Graph (Facebook, WhatsApp, Discord) */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteUrl} />
         <meta
           property="og:title"
-          content="AniManager - Anime Analytics & Tierlists"
+          content="AniManager - Analytics y Tierlists de Anime"
         />
-        <meta property="og:image" content={alyaImg} />
+        <meta
+          property="og:description"
+          content="Trackea tu progreso, analiza estadísticas con Web Workers y organiza tus favoritos."
+        />
+        <meta property="og:image" content={`${siteUrl}${alyaImg}`} />
+        <meta property="og:site_name" content="AniManager" />
+
+        {/* Twitter Cards */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="AniManager | Anime Journey Pro" />
+        <meta
+          name="twitter:description"
+          content="Lleva tu lista de anime al siguiente nivel con estadísticas detalladas."
+        />
+        <meta name="twitter:image" content={`${siteUrl}${alyaImg}`} />
       </Helmet>
 
       <main className="min-h-screen flex flex-col bg-background selection:bg-primary/30">
         <header>
           <Hero>
             <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase italic">
-              Track your <span className="text-primary">Anime</span> <br />
-              journey <span className="text-outline text-transparent">pro</span>
+              Gestiona tu camino <span className="text-primary">Anime</span>{" "}
+              <br />
+              como un{" "}
+              <span className="[-webkit-text-stroke:2px_var(--color-primary)] text-transparent">
+                pro
+              </span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed font-medium">
-              Analyze your stats, build custom tier lists, and keep all your
-              watched anime in one place.
+              Analiza tus estadísticas, crea tier lists personalizadas y mantén
+              todo tu historial en un solo lugar.
             </p>
 
             <nav
               className="flex flex-wrap gap-4 pt-6"
-              aria-label="Hero Actions"
+              aria-label="Acciones principales"
             >
               <a href="#features-grid">
                 <Button
                   size="lg"
                   className="font-bold px-8 shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
                 >
-                  Get Started
+                  Empezar ahora
                 </Button>
               </a>
               <Link to="/private/anime/list">
@@ -59,67 +87,74 @@ export const HomePage = () => {
                   variant="outline"
                   className="border-primary/20 hover:bg-primary/5 font-bold"
                 >
-                  Browse Anime
+                  Explorar Anime
                 </Button>
               </Link>
             </nav>
           </Hero>
         </header>
 
-        {/* BENTO GRID SECTION */}
-        <BentoGrid id="features-grid">
-          {/* Fila 1: Horizontal (Dominante) */}
-          <article className="md:col-span-2 md:row-span-1">
-            <TiltCard
-              title="Advanced Watched List"
-              description="Powerful filters synced with the URL for seamless searching."
-              image={kaguyaImg}
-              layoutType="horizontal"
-              cardHref="/private/anime/list"
-            />
-          </article>
+        {/* Sección de características con ID para el salto del Hero */}
+        <section id="features-grid" aria-labelledby="features-title">
+          {/* Título oculto para buscadores, mantiene la jerarquía semántica */}
+          <h2 id="features-title" className="sr-only">
+            Características principales
+          </h2>
 
-          {/* Columna Derecha: Vertical Larga (Ocupa 2 bloques de altura) */}
-          <article className="md:col-span-1 md:row-span-2">
-            <TiltCard
-              title="Analytics"
-              description="Visualize your watch time, top genres, and custom insights."
-              image={kohakuImg}
-              layoutType="vertical"
-              cardHref="/private/dashboard"
-            />
-          </article>
+          <BentoGrid>
+            <article className="md:col-span-2 md:row-span-1">
+              <TiltCard
+                title="Lista de Seguimiento Avanzada"
+                description="Filtros potentes sincronizados con la URL para búsquedas fluidas."
+                image={kaguyaImg}
+                altText="Interfaz de lista de anime con Kaguya Shinomiya"
+                layoutType="horizontal"
+                cardHref="/private/anime/list"
+              />
+            </article>
 
-          {/* Columna Izquierda: Vertical Larga (Cruza la fila central) */}
-          <article className="md:col-span-1 md:row-span-2">
-            <TiltCard
-              title="Tier Lists"
-              description="Smooth drag and drop to rank your favorites."
-              image={alyaImg}
-              layoutType="vertical"
-              cardHref="/private/anime/tierlist"
-            />
-          </article>
+            <article className="md:col-span-1 md:row-span-2">
+              <TiltCard
+                title="Analíticas"
+                description="Visualiza tu tiempo de visualización y géneros favoritos."
+                image={kohakuImg}
+                altText="Gráficos de estadísticas con Kohaku de Dr. Stone"
+                layoutType="vertical"
+                cardHref="/private/dashboard"
+              />
+            </article>
 
-          {/* Bloque Central: Mini (El cuadrito decorativo o de status) */}
-          <article className="md:col-span-1 md:row-span-1">
-            <TiltCard
-              image={rezeImg}
-              layoutType="mini"
-              className="border-primary/40 shadow-[0_0_50px_rgba(var(--color-primary),0.15)]"
-            />
-          </article>
+            <article className="md:col-span-1 md:row-span-2">
+              <TiltCard
+                title="Tier Lists"
+                description="Arrastra y suelta para clasificar tus animes preferidos."
+                image={alyaImg}
+                altText="Creador de tier lists con Alya"
+                layoutType="vertical"
+                cardHref="/private/anime/tierlist"
+              />
+            </article>
 
-          {/* Fila Final: Horizontal */}
-          <article className="md:col-span-2 md:row-span-1">
-            <TiltCard
-              title="Discovery"
-              description="Coming soon: Smart recommendation engine."
-              image={maomaoImg}
-              layoutType="horizontal"
-            />
-          </article>
-        </BentoGrid>
+            <article className="md:col-span-1 md:row-span-1">
+              <TiltCard
+                image={rezeImg}
+                altText="Decoración de interfaz con Reze de Chainsaw Man"
+                layoutType="mini"
+                className="border-primary/40 shadow-[0_0_50px_rgba(var(--color-primary),0.15)]"
+              />
+            </article>
+
+            <article className="md:col-span-2 md:row-span-1">
+              <TiltCard
+                title="Descubrimiento"
+                description="Próximamente: Motor de recomendaciones inteligente."
+                image={maomaoImg}
+                altText="Recomendaciones inteligentes con Maomao de Apothecary Diaries"
+                layoutType="horizontal"
+              />
+            </article>
+          </BentoGrid>
+        </section>
       </main>
     </>
   );
