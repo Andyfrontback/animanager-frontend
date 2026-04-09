@@ -133,7 +133,7 @@ export const HomePage = () => {
               />
             </article>
 
-            <article className="md:col-span-1 md:row-span-1">
+            <article className="hidden md:block md:col-span-1 md:row-span-1">
               <TiltCard
                 image={rezeImg}
                 altText="Dimly lit medium shot of Reze from 'Chainsaw Man' smiling softly in an indoor setting."

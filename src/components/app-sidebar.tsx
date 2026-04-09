@@ -10,7 +10,6 @@ import { NavSecondary } from "@/components/nav-secondary";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   /* SidebarFooter, */
   SidebarHeader,
   SidebarMenu,
@@ -91,18 +90,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent className="flex justify-between h-full">
           <nav aria-label="Main Navigation">
             <NavProjects projects={data.projects} />
             <NavMain items={data.navMain} />
             <NavSecondary items={data.navSecondary} className="mt-auto" />
           </nav>
+          <ModeToggle />
         </SidebarContent>
-        <ModeToggle />
-        <SidebarFooter>
-          {/* Si esto escala bien toca hacerle un backend o llamar un BaaS dedicado
-          <NavUser user={data.user} /> */}
-        </SidebarFooter>
+        {/* <SidebarFooter>
+           Si esto escala bien toca hacerle un backend o llamar un BaaS dedicado
+          <NavUser user={data.user} />
+        </SidebarFooter> */}
       </Sidebar>
     </aside>
   );

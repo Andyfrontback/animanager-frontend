@@ -1,16 +1,29 @@
 import { useTopAnimesQuery } from "@/features/home/hooks/useTopAnimesQuery";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { Anime } from "@/models";
 import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 
-const ANIMES_LIMIT = 24;
-const COLUMNS_COUNT = 8;
+const ANIMES_LIMIT_PC = 24;
+const ANIMES_LIMIT_MOBILE = 12;
+const COLUMNS_COUNT_PC = 6;
+const COLUMNS_COUNT_MOBILE = 4;
 
 interface HeroInput {
   children: ReactNode;
 }
 
 export const Hero = ({ children }: HeroInput) => {
+  const isMobile = useIsMobile();
+  const ANIMES_LIMIT = useMemo(
+    () => (isMobile ? ANIMES_LIMIT_MOBILE : ANIMES_LIMIT_PC),
+    [isMobile],
+  );
+  const COLUMNS_COUNT = useMemo(
+    () => (isMobile ? COLUMNS_COUNT_MOBILE : COLUMNS_COUNT_PC),
+    [isMobile],
+  );
+
   const { data: animes, isLoading } = useTopAnimesQuery({
     limit: ANIMES_LIMIT,
   });
@@ -29,7 +42,7 @@ export const Hero = ({ children }: HeroInput) => {
     <section className="relative w-full h-[70vh] lg:h-[85vh] overflow-hidden bg-background">
       {/* 1. Fondo Inclinado con Imágenes */}
       <div className="absolute inset-0 z-0 h-full">
-        <div className="absolute top-[10%] sm:-top-[20%] -left-[20%] w-[200%] sm:w-[120%] h-[140%] rotate-8 scale-110 opacity-30 md:opacity-40">
+        <div className="absolute -top-[10%] md:-top-[5%] lg:-top-[40%] -left-[5%] md:-left-[5%] lg:left-[0%] w-[110%] h-[110%] rotate-8 scale-110 lg:scale-90 opacity-30 md:opacity-40">
           {/* Cambiamos el Grid por un Flex contenedor de columnas */}
           <div className="flex justify-center gap-2 md:gap-4 p-4 w-full h-full">
             {isLoading
@@ -80,9 +93,9 @@ export const Hero = ({ children }: HeroInput) => {
 
       {/* 2. Overlays de Degradado (Cruciales para el diseño) */}
       {/* Degradado de abajo hacia arriba para mezclar con el resto de la página */}
-      <div className="absolute inset-0 z-1 bg-linear-to-t from-background via-background/40 to-transparent" />
+      <div className="absolute inset-0 z-1 bg-linear-to-t from-background via-background/20 dark:via-background/50 to-transparent" />
       {/* Degradado lateral para que el texto sea legible */}
-      <div className="absolute inset-0 z-1 bg-linear-to-r from-background via-background/40 to-transparent" />
+      <div className="absolute inset-0 z-1 bg-linear-to-r from-background via-background/10 dark:via-background/30 to-transparent" />
 
       {/* 3. Contenido Principal */}
       <div className="container relative z-10 flex h-full flex-col justify-center px-6 md:px-12">

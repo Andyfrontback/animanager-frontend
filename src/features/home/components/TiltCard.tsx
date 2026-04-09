@@ -95,11 +95,11 @@ export const TiltCard = ({
 
         {/* 3. CAPA OVERLAYS (Nivel 0) */}
         <div
-          className="absolute inset-0 z-1 bg-background/60 group-hover:bg-background/40 transition-colors duration-300"
+          className="absolute inset-0 z-1 bg-background/50 dark:bg-background/60 group-hover:bg-background/30 dark:group-hover:bg-background/40 transition-colors duration-300"
           style={{ transform: "translateZ(0px)" }}
         />
         <div
-          className="absolute inset-0 z-1 bg-linear-to-t from-background/95 via-background/50 to-transparent"
+          className="absolute inset-0 z-1 bg-linear-to-t dark:from-background/95 dark:via-background/50 to-transparent"
           style={{ transform: "translateZ(0px)" }}
         />
 
@@ -109,10 +109,10 @@ export const TiltCard = ({
           style={{ transform: "translateZ(30px)" }}
         >
           {/* Esquinas */}
-          <div className="absolute top-5 left-5 w-6 h-6 border-t-2 border-l-2 opacity-30 border-primary group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="absolute top-5 right-5 w-6 h-6 border-t-2 border-r-2 opacity-30 border-primary group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="absolute bottom-5 left-5 w-6 h-6 border-b-2 border-l-2 opacity-30 border-primary group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="absolute right-5 bottom-5 w-6 h-6 border-r-2 border-b-2 opacity-30 border-primary group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute top-5 left-5 w-6 h-6 border-t-2 border-l-2 opacity-40 border-primary group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute top-5 right-5 w-6 h-6 border-t-2 border-r-2 opacity-40 border-primary group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute bottom-5 left-5 w-6 h-6 border-b-2 border-l-2 opacity-40 border-primary group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute right-5 bottom-5 w-6 h-6 border-r-2 border-b-2 opacity-40 border-primary group-hover:opacity-100 transition-opacity duration-300" />
 
           {/* Línea de brillo inferior */}
           <div className="absolute right-0 bottom-0 left-0 h-1 bg-linear-to-r from-transparent via-primary to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
@@ -135,7 +135,7 @@ export const TiltCard = ({
             </h3>
           )}
           {description && (
-            <p className="text-muted-foreground text-sm mb-5 font-medium drop-shadow-md">
+            <p className="dark:text-muted-foreground text-sm mb-5 font-medium drop-shadow-sm">
               {description}
             </p>
           )}

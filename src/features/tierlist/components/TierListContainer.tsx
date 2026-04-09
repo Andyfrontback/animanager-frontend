@@ -141,7 +141,7 @@ export const TierListContainer = () => {
         {/* Bench Section */}
         <div className="mt-8 space-y-4">
           <div className="flex items-center justify-between px-2">
-            <h3 className="text-xl font-bold text-neutral-200 tracking-tight">
+            <h3 className="text-xl font-bold tracking-tight">
               Unranked
               <span className="ml-3 text-sm font-normal text-neutral-500">
                 ({localDistribution.bench.length} unranked anime)

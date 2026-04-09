@@ -89,7 +89,7 @@ export function DashboardPage() {
               {/* SECCIÓN 1: MÉTRICAS RÁPIDAS */}
               <section aria-labelledby="metrics-heading">
                 <h2 id="metrics-heading" className="sr-only">
-                  Resumen de Métricas
+                  Quick Metrics Summary
                 </h2>
                 <AnimeStatsCards
                   totalMinutes={stats.totalMinutes}
