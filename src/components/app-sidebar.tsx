@@ -59,7 +59,7 @@ const data = {
   projects: [
     {
       name: "Home",
-      url: "/public/home",
+      url: "/",
       icon: Home,
     },
     {

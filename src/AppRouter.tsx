@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route } from "react-router";
+import { BrowserRouter, Route } from "react-router";
 import Layout from "@/layouts/app.layout";
 import { PrivateGuard } from "@/guards";
 import { PrivateRouter } from "@/routes/PrivateRouter";
@@ -14,15 +14,12 @@ const AppRouter = () => {
         {/* Layout para toda la app */}
         <Route element={<Layout />}>
           {/* Rutas públicas */}
-          <Route path="public/*" element={<PublicRouter />} />
+          <Route path="/*" element={<PublicRouter />} />
 
           {/* Rutas Privadas (La verdad no va a ser nunca privado pero pa practicar está bien) */}
           <Route element={<PrivateGuard />}>
             <Route path="feature/*" element={<PrivateRouter />} />
           </Route>
-
-          {/* Redirección inicial (En producción cambiar a public mientras poner la dir a testear en desarrollo)*/}
-          <Route path="/" element={<Navigate to="public/home" />} />
         </Route>
       </RoutesWithNotFound>
     </BrowserRouter>
