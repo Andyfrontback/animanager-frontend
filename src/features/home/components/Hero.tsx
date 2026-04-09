@@ -80,7 +80,7 @@ export const Hero = ({ children }: HeroInput) => {
 
       {/* 2. Overlays de Degradado (Cruciales para el diseño) */}
       {/* Degradado de abajo hacia arriba para mezclar con el resto de la página */}
-      <div className="absolute inset-0 z-1 bg-linear-to-t from-background via-background/60 to-transparent" />
+      <div className="absolute inset-0 z-1 bg-linear-to-t from-background via-background/40 to-transparent" />
       {/* Degradado lateral para que el texto sea legible */}
       <div className="absolute inset-0 z-1 bg-linear-to-r from-background via-background/40 to-transparent" />
 

@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 
 // Assets
 import maomaoImg from "@/assets/imgs/Maomao.webp";
-import rezeImg from "@/assets/imgs/reze.jpg";
-import kaguyaImg from "@/assets/imgs/kaguya.jpg";
-import kohakuImg from "@/assets/imgs/Kohaku.jpg";
+import kaguyaImg from "@/assets/imgs/kaguya.webp";
 import alyaImg from "@/assets/imgs/alya.webp";
+import rezeImg from "@/assets/imgs/reze.webp";
+import ichinoseImg from "@/assets/imgs/ichinose.webp";
 import { siteBaseUrl } from "./constants";
 
 export const HomePage = () => {
@@ -74,7 +74,7 @@ export const HomePage = () => {
               <a href="#features-grid">
                 <Button
                   size="lg"
-                  className="font-bold px-8 shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
+                  className="font-bold px-8 shadow-xl shadow-primary/10 hover:scale-105 transition-transform"
                 >
                   Get Started
                 </Button>
@@ -115,8 +115,8 @@ export const HomePage = () => {
               <TiltCard
                 title="Analytics"
                 description="Visualize your watch time and favorite genres."
-                image={kohakuImg}
-                altText="Full-body shot of Kohaku from 'Dr. Stone' running outdoors while carrying a large wooden shield on her back."
+                image={ichinoseImg}
+                altText="Honami Ichinose from Classroom of the Elite in her school uniform at sunset."
                 layoutType="vertical"
                 cardHref="/feature/dashboard"
               />
