@@ -96,7 +96,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <NavMain items={data.navMain} />
             <NavSecondary items={data.navSecondary} className="mt-auto" />
           </nav>
-          <ModeToggle />
+          {/* Creamos un ul por accesibilidad, ya que el ModeToggle genera un li */}
+          <ul>
+            <ModeToggle />
+          </ul>
         </SidebarContent>
         {/* <SidebarFooter>
            Si esto escala bien toca hacerle un backend o llamar un BaaS dedicado

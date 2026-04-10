@@ -25,6 +25,7 @@ export const HomePage = () => {
           content="The ultimate platform to track your anime progress, analyze advanced statistics, and create personalized tier lists."
         />
         <link rel="canonical" href={siteBaseUrl} />
+        <link rel="preconnect" href="https://api.jikan.moe" />
 
         {/* Open Graph (Facebook, WhatsApp, Discord) */}
         <meta property="og:type" content="website" />

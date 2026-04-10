@@ -81,7 +81,7 @@ export const Hero = ({ children }: HeroInput) => {
                           alt={`Poster de ${anime.title}`}
                           className="w-full h-full object-cover rounded-md border border-border/50 shadow-2xl"
                           // Si es una de las primeras columnas, le damos prioridad
-                          fetchPriority={colIndex < 3 ? "high" : "auto"}
+                          fetchPriority={"high"}
                         />
                       </motion.div>
                     ))}
