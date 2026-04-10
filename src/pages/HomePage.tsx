@@ -36,7 +36,7 @@ export const HomePage = () => {
         />
         <meta
           property="og:description"
-          content="Track your progress, analyze statistics with Web Workers, and organize your favorites."
+          content="Track your progress, analyze statistics, and organize your favorites."
         />
         <meta property="og:image" content={`${siteBaseUrl}${ogImg}`} />
         <meta property="og:site_name" content="AniManager" />
