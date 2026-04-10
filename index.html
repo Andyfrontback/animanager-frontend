@@ -1,29 +1,88 @@
 <!doctype html>
 <html lang="en">
   <head>
-   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta data-react-helmet="true" name="keywords" content="anime, anime list, myanimelist, manga, otaku, animanager" />
 
-    <title data-react-helmet="true">AniManager | Manage your anime list</title>
-    <meta data-react-helmet="true" name="description" content="Organize your anime collection, check ratings, and discover the best series." />
-    <meta data-react-helmet="true" name="author" content="Andrés Ariza" />
+    <title class="static-seo">AniManager | Manage Your Anime Journey</title>
+    <meta
+      class="static-seo"
+      name="description"
+      content="The ultimate platform to track your anime progress, analyze advanced statistics, and create personalized tier lists."
+    />
+    <meta
+      class="static-seo"
+      name="keywords"
+      content="anime, anime list, myanimelist, manga, otaku, animanager"
+    />
+    <meta class="static-seo" name="author" content="Andrés Ariza" />
 
-    <meta data-react-helmet="true" property="og:type" content="website" />
-    <meta data-react-helmet="true" property="og:url" content="https://animanager.edinsonandresarizamendoza.workers.dev/" />
-    <meta data-react-helmet="true" property="og:title" content="AniManager | Your personal anime list" />
-    <meta data-react-helmet="true" property="og:description" content="Organize your anime collection in real time." />
-    <meta data-react-helmet="true" property="og:image" content="https://animanager.edinsonandresarizamendoza.workers.dev/alya.webp" />
+    <meta class="static-seo" property="og:type" content="website" />
+    <meta
+      class="static-seo"
+      property="og:url"
+      content="https://animanager.edinsonandresarizamendoza.workers.dev/"
+    />
+    <meta
+      class="static-seo"
+      property="og:title"
+      content="AniManager - Anime Analytics & Tier Lists"
+    />
+    <meta
+      class="static-seo"
+      property="og:description"
+      content="Track your progress, analyze statistics with Web Workers, and organize your favorites."
+    />
+    <meta
+      class="static-seo"
+      property="og:image"
+      content="https://animanager.edinsonandresarizamendoza.workers.dev/alya.webp"
+    />
+    <meta class="static-seo" property="og:site_name" content="AniManager" />
 
-    <meta data-react-helmet="true" name="twitter:card" content="summary_large_image" />
-    <meta data-react-helmet="true" name="twitter:title" content="AniManager | Your personal anime list" />
-    <meta data-react-helmet="true" name="twitter:image" content="https://animanager.edinsonandresarizamendoza.workers.dev/alya.webp" />
+    <meta
+      class="static-seo"
+      name="twitter:card"
+      content="summary_large_image"
+    />
+    <meta
+      class="static-seo"
+      name="twitter:title"
+      content="AniManager | Anime Journey Pro"
+    />
+    <meta
+      class="static-seo"
+      name="twitter:description"
+      content="Take your anime list to the next level with detailed statistics."
+    />
+    <meta
+      class="static-seo"
+      name="twitter:image"
+      content="https://animanager.edinsonandresarizamendoza.workers.dev/alya.webp"
+    />
 
-    <link data-react-helmet="true" rel="canonical" href="https://animanager.edinsonandresarizamendoza.workers.dev/" />
-</head>
+    <link
+      class="static-seo"
+      rel="canonical"
+      href="https://animanager.edinsonandresarizamendoza.workers.dev/"
+    />
+  </head>
   <body>
+    <div id="root">
+      <main class="flex items-center justify-center h-screen">
+        <div class="text-center">
+          <h1 class="text-4xl font-bold text-gray-700 mb-4">AniManager</h1>
+          <p class="text-gray-600 mb-8">Preparing your anime collection...</p>
+          <div class="flex justify-center">
+            <div
+              class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"
+            ></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
     <noscript>
       <div style="text-align: center; padding: 20px">
         <h1>AniManager</h1>
@@ -32,8 +91,6 @@
         </p>
       </div>
     </noscript>
-
-    <div id="root"></div>
 
     <script type="module" src="/src/main.tsx"></script>
   </body>
