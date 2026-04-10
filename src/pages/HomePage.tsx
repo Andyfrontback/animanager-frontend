@@ -11,7 +11,7 @@ import kaguyaImg from "@/assets/imgs/kaguya.webp";
 import alyaImg from "@/assets/imgs/alya.webp";
 import rezeImg from "@/assets/imgs/reze.webp";
 import ichinoseImg from "@/assets/imgs/ichinose.webp";
-import { siteBaseUrl } from "./constants";
+import { siteBaseUrl, ogImg } from "./constants";
 
 export const HomePage = () => {
   return (
@@ -38,7 +38,7 @@ export const HomePage = () => {
           property="og:description"
           content="Track your progress, analyze statistics with Web Workers, and organize your favorites."
         />
-        <meta property="og:image" content={`${siteBaseUrl}${alyaImg}`} />
+        <meta property="og:image" content={`${siteBaseUrl}${ogImg}`} />
         <meta property="og:site_name" content="AniManager" />
 
         {/* Twitter Cards */}
@@ -48,7 +48,7 @@ export const HomePage = () => {
           name="twitter:description"
           content="Take your anime list to the next level with detailed statistics."
         />
-        <meta name="twitter:image" content={`${siteBaseUrl}${alyaImg}`} />
+        <meta name="twitter:image" content={`${siteBaseUrl}${ogImg}`} />
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-background selection:bg-primary/30">

@@ -8,11 +8,10 @@ import { AnimeSearchPanel } from "@/features/anime/components/AnimeSearchPanel";
 import { DEFAULT_VALUES } from "@/features/anime/types/animeComp.types";
 import { useBrowserStore } from "@/stores/browser.store";
 
-import { siteBaseUrl } from "./constants";
-import alyaImg from "@/assets/imgs/alya.webp";
+import { siteBaseUrl, ogImg } from "./constants";
 
 const pageUrl = `${siteBaseUrl}/feature/anime/list`;
-const ogImage = new URL(alyaImg, siteBaseUrl).href;
+const ogImage = new URL(ogImg, siteBaseUrl).href;
 
 export const AnimeListPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();

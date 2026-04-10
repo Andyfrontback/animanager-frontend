@@ -1,10 +1,9 @@
 import { TierListContainer } from "@/features/tierlist/components/TierListContainer";
 import { Helmet } from "react-helmet-async";
-import { siteBaseUrl } from "./constants";
-import alyaImg from "@/assets/imgs/alya.webp";
+import { ogImg, siteBaseUrl } from "./constants";
 
 const pageUrl = `${siteBaseUrl}/feature/anime/tierlist`;
-const ogImage = new URL(alyaImg, siteBaseUrl).href;
+const ogImage = new URL(ogImg, siteBaseUrl).href;
 
 export const TierlistPage = () => {
   return (
