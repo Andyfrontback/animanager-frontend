@@ -1,5 +1,5 @@
 import { useTopAnimesQuery } from "@/features/home/hooks/useTopAnimesQuery";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/shared/hooks/use-mobile";
 import type { Anime } from "@/models";
 import { motion } from "motion/react";
 import { useMemo, type ReactNode } from "react";

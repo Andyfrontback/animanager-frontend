@@ -1,4 +1,4 @@
-import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { DialogDescription, DialogTitle } from "@/shared/components/ui/dialog";
 
 export const PanelHeader = () => (
   <>

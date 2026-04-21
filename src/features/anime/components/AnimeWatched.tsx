@@ -3,7 +3,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet";
+} from "@/shared/components/ui/sheet";
 import { useWatchedStore } from "@/stores";
 import { columns } from "./WatchedDataTable/columns";
 import { DataTable } from "@/features/anime/components/WatchedDataTable/data-table";

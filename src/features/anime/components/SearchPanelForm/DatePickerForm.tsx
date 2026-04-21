@@ -4,13 +4,13 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/shared/components/ui/button";
+import { Calendar } from "@/shared/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/shared/components/ui/popover";
 import {
   Controller,
   type Control,
@@ -18,7 +18,11 @@ import {
   type Path,
   type FieldError,
 } from "react-hook-form";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { FieldErrorComponent } from "./FieldErrorComponent";
 
 interface DatePickerFormProps<T extends FieldValues> {

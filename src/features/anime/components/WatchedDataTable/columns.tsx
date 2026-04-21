@@ -4,8 +4,8 @@
 import type { Anime } from "@/models";
 import { type ColumnDef } from "@tanstack/react-table";
 import { Trash2, ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/shared/components/ui/button";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 import { ToggleWatchedButton } from "../ToggleWatchedButton";
 
 export const columns: ColumnDef<Anime>[] = [

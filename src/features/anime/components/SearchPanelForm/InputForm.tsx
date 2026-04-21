@@ -9,8 +9,12 @@ import {
 } from "react-hook-form";
 import { X, Search } from "lucide-react"; // Iconos para UX
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/shared/components/ui/input";
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import type { HTMLInputTypeAttribute } from "react";
 import { FieldErrorComponent } from "./FieldErrorComponent";
 

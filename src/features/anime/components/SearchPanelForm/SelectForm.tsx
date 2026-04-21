@@ -15,9 +15,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/components/ui/select";
 
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@/shared/components/ui/field";
 import { FieldErrorComponent } from "./FieldErrorComponent";
 
 export interface SelectOption {

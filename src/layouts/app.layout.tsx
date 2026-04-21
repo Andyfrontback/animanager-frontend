@@ -1,17 +1,17 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import { AppSidebar } from "@/shared/components/app-sidebar";
+import { Sheet, SheetTrigger } from "@/shared/components/ui/sheet";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@/shared/components/ui/sidebar";
 import { Outlet, Link } from "react-router";
 import { BreadcrumbLayout } from "./components/BreadcrumbLayout";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { ScanEye } from "lucide-react";
 import { AnimeWatched } from "@/features/anime/components/AnimeWatched";
 import { Toaster } from "sonner";
-import GithubIcon from "@/components/ui/GitHub";
+import GithubIcon from "@/shared/components/ui/GitHub";
 
 export default function Layout() {
   return (

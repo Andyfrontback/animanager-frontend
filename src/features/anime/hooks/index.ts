@@ -1,2 +1,2 @@
 export * from "./useAnimeListSearchQuery";
-export * from "./useDebounce";
+export * from "../../../shared/hooks/useDebounce";

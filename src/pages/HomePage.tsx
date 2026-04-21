@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { Hero } from "@/features/home/components/Hero";
 import { BentoGrid } from "@/features/home/components/BentoGrid";
 import { TiltCard } from "@/features/home/components/TiltCard";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 // Assets
 import maomaoImg from "@/assets/imgs/Maomao.webp";

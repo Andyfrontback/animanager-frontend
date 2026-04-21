@@ -1,6 +1,6 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import AppRouter from "./AppRouter";
-import { ThemeProvider } from "./components/ui/theme-provider";
+import { ThemeProvider } from "./shared/components/ui/theme-provider";
 import ErrorBoundary from "./ErrorBoundary";
 import { queryClient } from "./utils";
 import { HelmetProvider } from "react-helmet-async";

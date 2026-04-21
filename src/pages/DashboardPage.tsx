@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 
 // Componentes y Hooks
 import { AnimeStatsCards } from "@/features/dashboard/components/SectionCard";

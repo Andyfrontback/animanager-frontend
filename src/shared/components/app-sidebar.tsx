@@ -3,9 +3,9 @@
 import * as React from "react";
 import { Frame, Home, PieChart, SquareTerminal } from "lucide-react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
-import { NavSecondary } from "@/components/nav-secondary";
+import { NavMain } from "@/shared/components/nav-main";
+import { NavProjects } from "@/shared/components/nav-projects";
+import { NavSecondary } from "@/shared/components/nav-secondary";
 /* import { NavUser } from "@/components/nav-user"; */
 import {
   Sidebar,
@@ -15,7 +15,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from "@/shared/components/ui/sidebar";
 import { Link } from "react-router";
 import { ModeToggle } from "./ui/mode-toggle";
 

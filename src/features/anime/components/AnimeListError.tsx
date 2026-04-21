@@ -1,5 +1,5 @@
 import { ServerCrash, RefreshCcw } from "lucide-react";
-import { Button } from "@/components/ui/button"; // Asumiendo que tienes el Button de shadcn
+import { Button } from "@/shared/components/ui/button"; // Asumiendo que tienes el Button de shadcn
 
 interface AnimeListErrorProps {
   errorMessage: string;

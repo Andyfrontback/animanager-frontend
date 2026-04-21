@@ -4,7 +4,7 @@ import { PrivateGuard } from "@/guards";
 import { PrivateRouter } from "@/routes/PrivateRouter";
 import { PublicRouter } from "@/routes/PublicRouter";
 import RoutesWithNotFound from "@/routes/components/RoutesWithNotFound";
-import { ScrollToTop } from "./components/ScrollToTop";
+import { ScrollToTop } from "./shared/components/ScrollToTop";
 
 const AppRouter = () => {
   return (

@@ -1,16 +1,16 @@
 import type { Anime } from "@/models";
 import { AudioLines, BookmarkCheck, Star } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/shared/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { type ReactNode } from "react";
-import { ImageWithSkeleton } from "@/components/ImageWithSkeleton";
+import { ImageWithSkeleton } from "@/shared/components/ImageWithSkeleton";
 
 interface AnimeProps {
   anime: Anime;

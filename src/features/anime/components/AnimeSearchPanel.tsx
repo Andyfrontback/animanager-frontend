@@ -1,23 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogHeader,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/shared/components/ui/dialog";
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "@/shared/components/ui/drawer";
 
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/shared/hooks/use-mobile";
 import { AnimeSearchForm } from "./AnimeSearchForm";
 import { SlidersHorizontal } from "lucide-react";
 import { PanelHeader } from "./AnimeSearchPanelHeader";

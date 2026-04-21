@@ -5,8 +5,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/components/context/";
+} from "@/shared/components/ui/dropdown-menu";
+import { useTheme } from "@/shared/components/context";
 import { SidebarMenuButton, SidebarMenuItem } from "./sidebar";
 
 export function ModeToggle() {

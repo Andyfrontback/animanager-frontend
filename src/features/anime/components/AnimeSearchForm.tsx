@@ -6,7 +6,7 @@ import {
   type SearchPanelInput,
   type SearchPanelSchema,
 } from "../schemas/anime.schema";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { DatePickerForm } from "./SearchPanelForm/DatePickerForm";
 import { SelectForm } from "./SearchPanelForm/SelectForm";
 import { InputForm } from "./SearchPanelForm/InputForm";
